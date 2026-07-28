@@ -18,7 +18,7 @@
 	--animate-blink: blink 1.2s step-end infinite;
 	--animate-drift: drift 120s linear infinite;
 	--animate-flicker: flicker 7s ease-in-out infinite;
-	--animate-marquee: marquee 45s linear infinite;
+	--animate-marquee: marquee 60s linear infinite;
 
 	/* La pista lleva el set de tecnologías duplicado, así que -50% es
 	   exactamente un set: el salto es invisible. */
@@ -99,6 +99,12 @@
 /* Resplandor de fósforo. Se aplica con criterio, solo a texto grande. */
 @utility phosphor {
 	text-shadow: 0 0 24px color-mix(in srgb, var(--color-amber) 30%, transparent);
+}
+
+/* Barra de scroll en ámbar, para la lista de proyectos. */
+@utility scroll-amber {
+	scrollbar-width: thin;
+	scrollbar-color: var(--color-amber) transparent;
 }
 
 /* Entrada escalonada al cargar. El delay lo pone cada elemento con --d. */

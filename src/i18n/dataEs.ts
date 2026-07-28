@@ -6,16 +6,14 @@
  * hardcodeado, así que agregar un idioma no toca los componentes.
  */
 
-export type JobStatus = "prod" | "curso" | "archivado";
-
-export interface Job {
-	/** Identificador del job. Es el orden en que los construiste. */
-	id: string;
+export interface Project {
+	/** Carpeta de imágenes: src/imagenes/<slug>/ */
+	slug: string;
 	name: string;
-	stack: string[];
-	status: JobStatus;
-	/** Cuánto llevó, en la voz del sitio: "14 meses", "3 semanas". */
-	elapsed: string;
+	/** Nombres exactos del registro en src/data/tech.ts */
+	tech: string[];
+	/** Hasta 3 archivos dentro de src/imagenes/<slug>/. Vacío = placeholder. */
+	images: string[];
 	/** Qué es y qué resolvía. Dos o tres frases. */
 	detail: string;
 	/** Lo más interesante que tuviste que resolver. Es lo que se lee de verdad. */
@@ -37,7 +35,7 @@ const es = {
 	nav: {
 		about: "SOBRE",
 		stack: "STACK",
-		jobs: "OBRA",
+		projects: "PROYECTOS",
 		contact: "CONTACTO",
 		skipToContent: "Saltar al contenido",
 	},
@@ -63,7 +61,6 @@ const es = {
 			{ key: "ubicación", value: "Argentina" },
 			{ key: "formación", value: "Analista de Sistemas" },
 			{ key: "foco", value: "backend · integración · automatización" },
-			{ key: "estado", value: "abierto a propuestas" },
 		],
 	},
 
@@ -71,18 +68,30 @@ const es = {
 		label: "§ STACK",
 		heading: "Con qué trabajo",
 		groups: [
-			{ name: "backend", items: ["C#", ".NET", "Go", "Node.js", "Supabase"] },
+			{
+				name: "backend",
+				items: ["C#", ".NET", "Go", "Node.js", "Supabase", "RabbitMQ"],
+			},
 			{
 				name: "frontend",
-				items: ["TypeScript", "JavaScript", "React", "HTML", "CSS"],
+				items: ["TypeScript", "JavaScript", "React", "Astro", "HTML", "CSS"],
 			},
 			{
 				name: "bases de datos",
-				items: ["PostgreSQL", "SQL", "NoSQL", "Redis", "ChromaDB"],
+				items: [
+					"PostgreSQL",
+					"MySQL",
+					"SQLite",
+					"MongoDB",
+					"Redis",
+					"ChromaDB",
+					"SQL",
+					"NoSQL",
+				],
 			},
 			{
 				name: "herramientas",
-				items: ["Docker", "Git", "GitHub Actions", "CI/CD", "n8n"],
+				items: ["Docker", "Kubernetes", "Git", "GitHub Actions", "n8n"],
 			},
 			{
 				name: "ia",
@@ -92,27 +101,16 @@ const es = {
 		],
 	},
 
-	jobs: {
-		label: "§ OBRA",
-		heading: "Cola de trabajos",
-		note: "Abrí cualquiera para ver el detalle.",
-		columns: {
-			id: "JOB",
-			name: "NOMBRE",
-			stack: "STACK",
-			status: "ESTADO",
-			elapsed: "ELAPSED",
-		},
-		status: {
-			prod: "EN PROD",
-			curso: "EN CURSO",
-			archivado: "ARCHIVADO",
-		},
+	projects: {
+		label: "§ PROYECTOS",
+		heading: "Proyectos",
 		detailLabel: "detalle",
 		noteLabel: "lo interesante",
 		visit: "ver en vivo",
 		source: "código",
 		noLinks: "sin link público",
+		noImage: "sin captura",
+		shotLabel: "captura",
 	},
 
 	contact: {
@@ -127,49 +125,45 @@ const es = {
 		footer: "hecho con Astro · sin frameworks de más",
 	},
 
-	jobsList: [
+	projectList: [
 		{
-			id: "0001",
+			slug: "api-inventario",
 			name: "API de inventario",
-			stack: ["Node.js", "PostgreSQL", "Docker"],
-			status: "prod",
-			elapsed: "14 meses",
+			tech: ["C#", ".NET", "PostgreSQL", "Docker"],
+			images: [],
 			detail:
-				"[Placeholder] API REST para control de stock en tiempo real, con autenticación JWT y roles por sucursal.",
-			note: "[Placeholder] Contá acá el problema difícil: la condición de carrera que tuviste que resolver, la decisión de modelado que cambió todo, el número que mejoró.",
+				"[Placeholder] API REST para control de stock en tiempo real, con autenticación y roles por sucursal.",
+			note: "[Placeholder] Contá acá el problema difícil: la condición de carrera que resolviste, la decisión de modelado que cambió todo, el número que mejoró.",
 			url: null,
 			repo: null,
 		},
 		{
-			id: "0002",
+			slug: "sistema-turnos",
 			name: "Sistema de turnos",
-			stack: ["Java", "Spring Boot", "MySQL"],
-			status: "prod",
-			elapsed: "8 meses",
+			tech: ["Node.js", "TypeScript", "MySQL", "Docker"],
+			images: [],
 			detail:
-				"[Placeholder] Gestión de turnos médicos con notificaciones automáticas y agenda por profesional.",
+				"[Placeholder] Gestión de turnos con notificaciones automáticas y agenda por profesional.",
 			note: "[Placeholder] Qué aprendiste manejando husos horarios, recordatorios y cancelaciones tardías.",
 			url: null,
 			repo: null,
 		},
 		{
-			id: "0003",
-			name: "Motor de recomendaciones",
-			stack: ["Python", "FastAPI", "Redis"],
-			status: "curso",
-			elapsed: "3 meses",
+			slug: "buscador-semantico",
+			name: "Buscador semántico",
+			tech: ["Go", "ChromaDB", "PostgreSQL"],
+			images: [],
 			detail:
-				"[Placeholder] Servicio de recomendaciones sobre historial de compras, servido detrás de una cache.",
-			note: "[Placeholder] Cómo mediste si las recomendaciones eran buenas.",
+				"[Placeholder] Búsqueda por similitud sobre documentos internos, con embeddings en base vectorial.",
+			note: "[Placeholder] Cómo mediste si los resultados eran buenos.",
 			url: null,
 			repo: null,
 		},
 		{
-			id: "0004",
+			slug: "gateway-pagos",
 			name: "Gateway de pagos",
-			stack: ["C#", ".NET", "SQL Server"],
-			status: "prod",
-			elapsed: "11 meses",
+			tech: ["C#", ".NET", "RabbitMQ", "SQL"],
+			images: [],
 			detail:
 				"[Placeholder] Integración con pasarelas de pago y conciliación automática de movimientos.",
 			note: "[Placeholder] Idempotencia, reintentos y qué pasa cuando la pasarela responde dos veces.",
@@ -177,30 +171,72 @@ const es = {
 			repo: null,
 		},
 		{
-			id: "0005",
-			name: "Panel de métricas",
-			stack: ["TypeScript", "Express", "Grafana"],
-			status: "archivado",
-			elapsed: "5 meses",
+			slug: "automatizaciones",
+			name: "Automatizaciones internas",
+			tech: ["n8n", "Node.js", "Supabase"],
+			images: [],
 			detail:
-				"[Placeholder] Dashboard interno de monitoreo de servicios con alertas por umbral.",
-			note: "[Placeholder] Por qué lo archivaste — reemplazado, discontinuado, o cumplió su ciclo.",
+				"[Placeholder] Workflows que reemplazaron tareas manuales recurrentes del equipo.",
+			note: "[Placeholder] Cuántas horas por semana dejó de hacer alguien a mano.",
 			url: null,
 			repo: null,
 		},
 		{
-			id: "0006",
+			slug: "migrador-datos",
 			name: "Migrador de datos",
-			stack: ["Python", "ETL", "AWS"],
-			status: "archivado",
-			elapsed: "3 semanas",
+			tech: ["Go", "MongoDB", "PostgreSQL", "Kubernetes"],
+			images: [],
 			detail:
 				"[Placeholder] CLI para migrar datos entre una base legacy y el esquema nuevo.",
 			note: "[Placeholder] El registro sucio que te obligó a repensar la validación entera.",
 			url: null,
 			repo: null,
 		},
-	] satisfies Job[],
+		{
+			slug: "panel-metricas",
+			name: "Panel de métricas",
+			tech: ["TypeScript", "React", "PostgreSQL", "Docker"],
+			images: [],
+			detail:
+				"[Placeholder] Dashboard interno de monitoreo de servicios con alertas por umbral.",
+			note: "[Placeholder] Qué métrica resultó ser la que de verdad avisaba antes de que algo se cayera.",
+			url: null,
+			repo: null,
+		},
+		{
+			slug: "integracion-erp",
+			name: "Integración con ERP",
+			tech: ["C#", ".NET", "RabbitMQ", "SQL"],
+			images: [],
+			detail:
+				"[Placeholder] Sincronización de maestros y comprobantes entre el ERP y los servicios propios.",
+			note: "[Placeholder] Cómo manejaste que el ERP no siempre estuviera disponible.",
+			url: null,
+			repo: null,
+		},
+		{
+			slug: "scraper-precios",
+			name: "Scraper de precios",
+			tech: ["Go", "Redis", "Docker", "Kubernetes"],
+			images: [],
+			detail:
+				"[Placeholder] Relevamiento periódico de precios de la competencia, con cache y reintentos.",
+			note: "[Placeholder] El límite de rate que te obligó a repensar la estrategia de scheduling.",
+			url: null,
+			repo: null,
+		},
+		{
+			slug: "prototipo-unity",
+			name: "Prototipo en Unity",
+			tech: ["Unity", "C#"],
+			images: [],
+			detail:
+				"[Placeholder] Prototipo jugable armado para probar una mecánica concreta.",
+			note: "[Placeholder] Qué te llevaste de trabajar con un loop de frames en vez de request/response.",
+			url: null,
+			repo: null,
+		},
+	] satisfies Project[],
 };
 
 export type Dict = typeof es;

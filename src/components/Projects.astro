@@ -1,0 +1,230 @@
+---
+/**
+ * Lista a la izquierda, panel a la derecha.
+ *
+ * Las dos columnas comparten una altura fija en desktop (`lg:h-[28rem]`), así
+ * que miden exactamente lo mismo pase lo que pase con el contenido. Esa altura
+ * es a propósito más baja que los 10 proyectos juntos: la lista tiene que
+ * scrollear, no mostrarse entera.
+ *
+ * Dentro del panel, la imagen y la barra de tecnologías quedan fijas y solo
+ * scrollea el texto — si scrolleara todo, la captura se iría de pantalla.
+ *
+ * Todos los paneles se renderizan en el server y se alternan con `hidden`: el
+ * primero se ve aunque el JS no cargue, y las imágenes de los demás son lazy.
+ */
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { techByName } from "../data/tech";
+import t from "../i18n/dataEs";
+
+// Astro procesa lo que esté en src/ — convierte a WebP, genera anchos y agrega
+// width/height. En public/ se copiarían crudas.
+const files = import.meta.glob<{ default: ImageMetadata }>(
+	"/src/imagenes/**/*.{png,jpg,jpeg,webp,avif}",
+	{ eager: true },
+);
+
+const shotsFor = (slug: string, names: string[]) =>
+	names
+		.map((name) => files[`/src/imagenes/${slug}/${name}`]?.default)
+		.filter((img): img is ImageMetadata => Boolean(img));
+---
+
+<section
+	id="proyectos"
+	class="scroll-mt-4 border-t border-amber/15 px-5 py-14 sm:px-8 md:px-14 md:py-20"
+>
+	<div class="mx-auto max-w-[72rem]">
+		<p class="font-mono text-xs tracking-[0.14em] text-amber">
+			{t.projects.label}
+		</p>
+		<h2
+			class="mt-3 font-mono text-2xl font-medium tracking-[-0.02em] text-bone sm:text-3xl"
+		>
+			{t.projects.heading}
+		</h2>
+
+		<div
+			class="mt-8 grid gap-8 lg:h-[28rem] lg:grid-cols-[minmax(0,17rem)_minmax(0,1fr)] lg:gap-10"
+		>
+			{/* Selector */}
+			<div
+				class="scroll-amber max-h-[15rem] overflow-y-auto border-y border-amber/15 lg:h-full lg:max-h-none"
+			>
+				{
+					t.projectList.map((project, i) => (
+						<button
+							type="button"
+							data-project-pick={i}
+							aria-current={i === 0 ? "true" : "false"}
+							class="group flex w-full cursor-pointer items-center gap-3 border-b border-amber/10 px-3 py-3 text-left transition-colors last:border-b-0 hover:bg-amber/5 aria-[current=true]:bg-amber/10"
+						>
+							<span
+								class="text-amber opacity-0 transition-opacity group-aria-[current=true]:opacity-100"
+								aria-hidden="true"
+							>
+								▸
+							</span>
+							<span class="font-mono text-sm text-muted group-aria-[current=true]:text-amber-hi">
+								{project.name}
+							</span>
+						</button>
+					))
+				}
+			</div>
+
+			{/* Panel */}
+			<div class="lg:h-full">
+				{
+					t.projectList.map((project, i) => {
+						const shots = shotsFor(project.slug, project.images);
+
+						return (
+							<div
+								data-project-panel={i}
+								hidden={i !== 0}
+								class="flex flex-col lg:h-full"
+							>
+								{/* object-contain, no cover: las capturas vienen con relaciones
+								    distintas (código alto, consola ancha) y recortarlas sería peor
+								    que dejar que el fondo oscuro haga de marco. */}
+								<div class="relative h-[13rem] shrink-0 overflow-hidden border border-amber/20 bg-cell sm:h-[15rem]">
+									{shots.length > 0 ? (
+										shots.map((shot, k) => (
+											<Image
+												src={shot}
+												alt={`${project.name} — ${t.projects.shotLabel} ${k + 1}`}
+												data-shot={k}
+												hidden={k !== 0}
+												loading={i === 0 && k === 0 ? "eager" : "lazy"}
+												class="size-full object-contain"
+											/>
+										))
+									) : (
+										<div class="flex size-full items-center justify-center font-mono text-xs text-faint">
+											{t.projects.noImage}
+										</div>
+									)}
+								</div>
+
+								{shots.length > 1 && (
+									<div class="mt-2 flex shrink-0 gap-2">
+										{shots.map((_, k) => (
+											<button
+												type="button"
+												data-shot-pick={k}
+												aria-current={k === 0 ? "true" : "false"}
+												aria-label={`${t.projects.shotLabel} ${k + 1}`}
+												class="h-1 flex-1 cursor-pointer bg-amber/20 transition-colors hover:bg-amber/40 aria-[current=true]:bg-amber"
+											/>
+										))}
+									</div>
+								)}
+
+								{/* Barra de tecnologías: acá no se filtra nada. Sin logo, va texto. */}
+								<div class="mt-3 flex shrink-0 flex-wrap items-center gap-x-5 gap-y-2 border-y border-amber/15 py-2.5">
+									{project.tech.map((name) => {
+										const item = techByName.get(name);
+										return (
+											<span class="flex items-center gap-2">
+												{item?.icon && (
+													<svg
+														viewBox="0 0 24 24"
+														class="size-4 shrink-0 fill-amber/70"
+														aria-hidden="true"
+													>
+														<path d={item.icon.path} />
+													</svg>
+												)}
+												<span class="font-mono text-xs text-muted">{name}</span>
+											</span>
+										);
+									})}
+								</div>
+
+								{/* min-h-0 es lo que deja que este hijo flex se encoja y scrollee */}
+								<div class="scroll-amber mt-4 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:pr-3">
+									<h3 class="font-mono text-lg text-amber-hi">{project.name}</h3>
+
+									<p class="mt-3 font-mono text-[11px] tracking-[0.1em] text-faint">
+										{t.projects.detailLabel}
+									</p>
+									<p class="mt-1.5 max-w-[62ch] text-[15px] leading-[1.7] text-bone">
+										{project.detail}
+									</p>
+
+									<p class="mt-4 font-mono text-[11px] tracking-[0.1em] text-faint">
+										{t.projects.noteLabel}
+									</p>
+									<p class="mt-1.5 max-w-[62ch] text-[15px] leading-[1.7] text-muted">
+										{project.note}
+									</p>
+
+									<div class="mt-5 flex flex-wrap gap-x-6 gap-y-2 pb-1 font-mono text-xs">
+										{project.url && (
+											<a
+												href={project.url}
+												class="text-amber underline-offset-4 hover:text-amber-hi hover:underline"
+											>
+												{t.projects.visit} →
+											</a>
+										)}
+										{project.repo && (
+											<a
+												href={project.repo}
+												class="text-amber underline-offset-4 hover:text-amber-hi hover:underline"
+											>
+												{t.projects.source} →
+											</a>
+										)}
+										{!project.url && !project.repo && (
+											<span class="text-faint">{t.projects.noLinks}</span>
+										)}
+									</div>
+								</div>
+							</div>
+						);
+					})
+				}
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	const picks = document.querySelectorAll<HTMLButtonElement>(
+		"[data-project-pick]",
+	);
+	const panels = document.querySelectorAll<HTMLElement>("[data-project-panel]");
+
+	for (const pick of picks) {
+		pick.addEventListener("click", () => {
+			const index = pick.dataset.projectPick;
+			for (const other of picks) {
+				other.setAttribute("aria-current", String(other === pick));
+			}
+			for (const panel of panels) {
+				panel.hidden = panel.dataset.projectPanel !== index;
+			}
+		});
+	}
+
+	// Carrusel dentro de cada panel: los selectores viven en su propio panel.
+	for (const panel of panels) {
+		const bars = panel.querySelectorAll<HTMLButtonElement>("[data-shot-pick]");
+		const shots = panel.querySelectorAll<HTMLElement>("[data-shot]");
+
+		for (const bar of bars) {
+			bar.addEventListener("click", () => {
+				const index = bar.dataset.shotPick;
+				for (const other of bars) {
+					other.setAttribute("aria-current", String(other === bar));
+				}
+				for (const shot of shots) {
+					shot.hidden = shot.dataset.shot !== index;
+				}
+			});
+		}
+	}
+</script>

@@ -2,35 +2,14 @@
 /**
  * Cinta de tecnologías en desplazamiento continuo.
  *
- * Los logos salen de `simple-icons` y se pintan con `fill-current` en ámbar:
- * monocromo a propósito, para que ninguna marca meta su propio color en la
- * paleta. Las que no tienen logo en el paquete van solo con etiqueta mono.
+ * Solo entran las que tienen logo (ver `src/data/tech.ts`). Los logos se
+ * inlinean en el build y se pintan en ámbar monocromo: si cada marca trajera su
+ * color, veintipico de logos corporativos romperían la paleta.
  *
- * Es decorativa — el <dl> de Stack ya lista lo mismo de forma semántica — así
- * que todo el bloque va con aria-hidden.
+ * El bloque es decorativo — el <dl> de Stack ya dice lo mismo de forma
+ * semántica — así que va entero con aria-hidden.
  */
-import {
-	siClaude,
-	siCss,
-	siDocker,
-	siDotnet,
-	siGit,
-	siGithubactions,
-	siGithubcopilot,
-	siGo,
-	siHtml5,
-	siJavascript,
-	siN8n,
-	siNodedotjs,
-	siOpencode,
-	siPostgresql,
-	siReact,
-	siRedis,
-	siSupabase,
-	siTypescript,
-	siUnity,
-	siUnrealengine,
-} from "simple-icons";
+import { TECH_WITH_ICON } from "../data/tech";
 
 interface Props {
 	/** Gira hacia el otro lado. Dos cintas iguales en el mismo sentido se leen como error. */
@@ -39,46 +18,8 @@ interface Props {
 
 const { reverse = false } = Astro.props;
 
-interface Tech {
-	name: string;
-	icon: { path: string } | null;
-}
-
-// Mismo orden que los grupos del stack, para que las dos lecturas coincidan.
-const tech: Tech[] = [
-	{ name: "C#", icon: null },
-	{ name: ".NET", icon: siDotnet },
-	{ name: "Go", icon: siGo },
-	{ name: "Node.js", icon: siNodedotjs },
-	{ name: "Supabase", icon: siSupabase },
-	{ name: "TypeScript", icon: siTypescript },
-	{ name: "JavaScript", icon: siJavascript },
-	{ name: "React", icon: siReact },
-	{ name: "HTML", icon: siHtml5 },
-	{ name: "CSS", icon: siCss },
-	{ name: "PostgreSQL", icon: siPostgresql },
-	{ name: "SQL", icon: null },
-	{ name: "NoSQL", icon: null },
-	{ name: "Redis", icon: siRedis },
-	{ name: "ChromaDB", icon: null },
-	{ name: "Docker", icon: siDocker },
-	{ name: "Git", icon: siGit },
-	{ name: "GitHub Actions", icon: siGithubactions },
-	{ name: "CI/CD", icon: null },
-	{ name: "n8n", icon: siN8n },
-	{ name: "Copilot", icon: siGithubcopilot },
-	{ name: "Codex", icon: null },
-	{ name: "Claude Code", icon: siClaude },
-	{ name: "Kilo Code", icon: null },
-	{ name: "Opencode", icon: siOpencode },
-	{ name: "Aider", icon: null },
-	{ name: "Unity", icon: siUnity },
-	{ name: "Unreal Engine", icon: siUnrealengine },
-	{ name: "Scrum", icon: null },
-];
-
 // La pista duplicada hace que el bucle cierre sin salto.
-const track = [...tech, ...tech];
+const track = [...TECH_WITH_ICON, ...TECH_WITH_ICON];
 ---
 
 <div
@@ -95,11 +36,9 @@ const track = [...tech, ...tech];
 			track.map((item) => (
 				/* pr en vez de gap: cada celda mide lo mismo y el -50% cae exacto */
 				<div class="flex shrink-0 items-center gap-2.5 pr-10">
-					{item.icon && (
-						<svg viewBox="0 0 24 24" class="size-[18px] shrink-0 fill-amber/70">
-							<path d={item.icon.path} />
-						</svg>
-					)}
+					<svg viewBox="0 0 24 24" class="size-[18px] shrink-0 fill-amber/70">
+						<path d={item.icon.path} />
+					</svg>
 					<span class="font-mono text-xs whitespace-nowrap text-muted">
 						{item.name}
 					</span>
