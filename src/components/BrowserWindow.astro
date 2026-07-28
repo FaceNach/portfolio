@@ -1,0 +1,76 @@
+---
+/** Mock de ventana de Chrome (tema oscuro, macOS). Port del starter `browser-window.jsx`. */
+interface Props {
+	tab?: string;
+	url?: string;
+	/** id para el <span> del título de pestaña, si hay que actualizarlo desde JS */
+	tabId?: string;
+	/** id para el <span> de la barra de direcciones */
+	urlId?: string;
+}
+
+const {
+	tab = "New Tab",
+	url = "example.com",
+	tabId,
+	urlId,
+} = Astro.props;
+---
+
+<div
+	class="flex w-full max-w-[640px] flex-col overflow-hidden rounded-[10px] bg-chrome-tab shadow-[0_24px_80px_rgba(0,0,0,0.35),0_0_0_1px_rgba(0,0,0,0.1)]"
+>
+	{/* Tab bar */}
+	<div class="flex h-11 items-center bg-chrome-bar pr-2">
+		<div class="flex gap-2 px-[14px]">
+			<div class="size-3 rounded-full bg-[#ff5f57]"></div>
+			<div class="size-3 rounded-full bg-[#febc2e]"></div>
+			<div class="size-3 rounded-full bg-[#28c840]"></div>
+		</div>
+		<div class="flex h-full flex-1 items-end pl-1">
+			<div
+				class="relative flex h-[34px] max-w-[220px] min-w-[120px] items-center gap-2 self-end rounded-t-lg bg-chrome-tab px-3 font-sans text-xs text-chrome-text"
+			>
+				<svg
+					width="8"
+					height="10"
+					viewBox="0 0 8 10"
+					class="absolute bottom-0 -left-2 fill-chrome-tab"
+					aria-hidden="true"><path d="M0 10C2 9 6 8 8 0V10H0Z"></path></svg
+				>
+				<svg
+					width="8"
+					height="10"
+					viewBox="0 0 8 10"
+					class="absolute bottom-0 -right-2 -scale-x-100 fill-chrome-tab"
+					aria-hidden="true"><path d="M0 10C2 9 6 8 8 0V10H0Z"></path></svg
+				>
+				<div class="size-3.5 shrink-0 rounded-full bg-[#5f6368]"></div>
+				<span id={tabId} class="flex-1 truncate">{tab}</span>
+			</div>
+		</div>
+	</div>
+
+	{/* Toolbar */}
+	<div class="flex h-10 items-center gap-1 bg-chrome-tab px-2">
+		<div class="flex size-7 items-center justify-center">
+			<div class="size-4 rounded-full bg-chrome-dim opacity-40"></div>
+		</div>
+		<div
+			class="mx-1.5 flex h-[30px] flex-1 items-center gap-2 rounded-[15px] bg-chrome-url px-[14px]"
+		>
+			<div class="size-3 rounded-full bg-chrome-dim opacity-40"></div>
+			<span id={urlId} class="flex-1 truncate font-sans text-[13px] text-chrome-text"
+				>{url}</span
+			>
+		</div>
+		<div class="flex size-7 items-center justify-center">
+			<div class="size-4 rounded-full bg-chrome-dim opacity-40"></div>
+		</div>
+	</div>
+
+	{/* Viewport */}
+	<div class="h-[336px] overflow-auto bg-white">
+		<slot />
+	</div>
+</div>
