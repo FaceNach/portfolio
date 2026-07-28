@@ -1,35 +1,50 @@
 ---
-import { profile } from "../data/portfolio";
+import AmbientLog from "./AmbientLog.astro";
+import t from "../i18n/dataEs";
 ---
 
 <section
 	id="top"
-	class="relative flex min-h-screen flex-col justify-center px-6 md:px-12"
+	class="relative flex min-h-svh flex-col justify-center overflow-hidden px-5 pt-16 pb-16 sm:px-8 md:px-14"
 >
-	<div class="max-w-[900px]">
-		<p class="mb-5 font-mono text-[15px] tracking-[1px] text-gold">Hola, soy</p>
-		<h1
-			class="mb-5 font-display text-[clamp(48px,8vw,96px)] leading-[1.02] font-bold text-bone"
-		>
-			{profile.name}
-		</h1>
-		<h2
-			class="mb-6 font-display text-[clamp(20px,2.6vw,32px)] font-medium text-muted"
-		>
-			{profile.role}
-		</h2>
-		<p class="max-w-[560px] text-base leading-[1.7] text-muted">
-			{profile.tagline}
-		</p>
-	</div>
+	<AmbientLog />
 
-	<div
-		class="absolute bottom-12 left-6 flex animate-scrollcue flex-col items-center gap-2 md:left-12"
-		aria-hidden="true"
-	>
-		<span class="font-mono text-[11px] [writing-mode:vertical-rl] text-faint"
-			>SCROLL</span
+	<div class="relative mx-auto w-full max-w-[78ch]">
+		{/* Banner de sesión: el equivalente al motd que ves al entrar por ssh */}
+		<div
+			class="rise flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] text-faint sm:text-xs"
+			style="--d:0ms"
 		>
-		<div class="h-10 w-px bg-faint"></div>
+			<span class="text-amber">{t.hero.host}</span>
+			<span>{t.hero.lastSession}</span>
+		</div>
+
+		<div class="rise mt-3 h-px bg-amber/25" style="--d:80ms"></div>
+
+		<h1
+			class="rise mt-6 font-mono text-[clamp(2.75rem,11vw,7rem)] leading-[0.92] font-semibold tracking-[-0.03em] text-amber phosphor"
+			style="--d:160ms"
+		>
+			{t.hero.nameFirst}<br />{t.hero.nameLast}<span
+				class="ml-1 inline-block w-[0.5em] animate-blink align-baseline text-amber-hi"
+				aria-hidden="true">▊</span
+			>
+		</h1>
+
+		<p
+			class="rise mt-5 font-mono text-sm text-muted sm:text-base"
+			style="--d:240ms"
+		>
+			{t.hero.role}
+		</p>
+
+		<div class="rise mt-5 h-px bg-amber/15" style="--d:300ms"></div>
+
+		<p
+			class="rise mt-5 max-w-[58ch] text-[15px] leading-[1.75] text-bone sm:text-base"
+			style="--d:360ms"
+		>
+			{t.hero.intro}
+		</p>
 	</div>
 </section>

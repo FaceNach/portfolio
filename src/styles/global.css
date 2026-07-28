@@ -1,38 +1,74 @@
 @import "tailwindcss";
 
 @theme {
-	/* Paleta del diseño */
+	/* Paleta — sin cambios respecto al mock original */
 	--color-ink: #161317;
-	--color-ink-alt: #1b181c;
-	--color-card: #2b252c;
+	--color-panel: #1b181c;
+	--color-cell: #2b252c;
+	--color-amber: #ddbf88;
+	--color-amber-hi: #f4dd97;
 	--color-bone: #f4f1ea;
 	--color-muted: #9197a9;
 	--color-faint: #60616d;
-	--color-gold: #ddbf88;
-	--color-gold-light: #f4dd97;
 
-	/* Sub-paleta del mock de navegador */
-	--color-chrome-bar: #202124;
-	--color-chrome-tab: #35363a;
-	--color-chrome-url: #282a2d;
-	--color-chrome-text: #e8eaed;
-	--color-chrome-dim: #9aa0a6;
+	/* mono = salida de máquina · sans = voz humana */
+	--font-mono: "IBM Plex Mono", ui-monospace, monospace;
+	--font-sans: "IBM Plex Sans", system-ui, sans-serif;
 
-	--font-display: "Space Grotesk", sans-serif;
-	--font-body: "Inter", sans-serif;
-	--font-mono: "JetBrains Mono", monospace;
+	--animate-blink: blink 1.2s step-end infinite;
+	--animate-drift: drift 120s linear infinite;
+	--animate-flicker: flicker 7s ease-in-out infinite;
+	--animate-marquee: marquee 45s linear infinite;
 
-	--animate-scrollcue: scrollcue 2s ease-in-out infinite;
+	/* La pista lleva el set de tecnologías duplicado, así que -50% es
+	   exactamente un set: el salto es invisible. */
+	@keyframes marquee {
+		from {
+			transform: translateX(0);
+		}
+		to {
+			transform: translateX(-50%);
+		}
+	}
 
-	@keyframes scrollcue {
+	@keyframes blink {
 		0%,
 		100% {
-			transform: translateY(0);
-			opacity: 0.5;
+			opacity: 1;
 		}
 		50% {
-			transform: translateY(8px);
+			opacity: 0;
+		}
+	}
+
+	@keyframes drift {
+		from {
+			transform: translateY(0);
+		}
+		to {
+			transform: translateY(-50%);
+		}
+	}
+
+	/* Deriva de brillo de fósforo. Muy baja amplitud y lenta: nada de parpadeo agresivo. */
+	@keyframes flicker {
+		0%,
+		100% {
+			opacity: 0.97;
+		}
+		50% {
 			opacity: 1;
+		}
+	}
+
+	@keyframes rise {
+		from {
+			opacity: 0;
+			transform: translateY(6px);
+		}
+		to {
+			opacity: 1;
+			transform: none;
 		}
 	}
 }
@@ -45,20 +81,30 @@
 	body {
 		background: var(--color-ink);
 		color: var(--color-bone);
-		font-family: var(--font-body);
+		font-family: var(--font-sans);
 		-webkit-font-smoothing: antialiased;
 	}
 
 	::selection {
-		background: var(--color-gold);
+		background: var(--color-amber);
 		color: var(--color-ink);
 	}
 
 	:focus-visible {
-		outline: 2px solid var(--color-gold);
+		outline: 1px solid var(--color-amber);
 		outline-offset: 3px;
-		border-radius: 4px;
 	}
+}
+
+/* Resplandor de fósforo. Se aplica con criterio, solo a texto grande. */
+@utility phosphor {
+	text-shadow: 0 0 24px color-mix(in srgb, var(--color-amber) 30%, transparent);
+}
+
+/* Entrada escalonada al cargar. El delay lo pone cada elemento con --d. */
+@utility rise {
+	animation: rise 0.55s cubic-bezier(0.2, 0.6, 0.2, 1) both;
+	animation-delay: var(--d, 0ms);
 }
 
 @media (prefers-reduced-motion: reduce) {

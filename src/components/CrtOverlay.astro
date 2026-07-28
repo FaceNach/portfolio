@@ -1,0 +1,19 @@
+---
+/** Atmósfera de monitor de fósforo: scanlines + viñeta + deriva de brillo. */
+---
+
+<div
+	class="pointer-events-none fixed inset-0 z-40 animate-flicker"
+	aria-hidden="true"
+>
+	{/* Scanlines: una línea oscura cada 3px */}
+	<div
+		class="absolute inset-0 bg-[repeating-linear-gradient(to_bottom,rgba(0,0,0,0.22)_0px,rgba(0,0,0,0.22)_1px,transparent_1px,transparent_3px)] opacity-45"
+	>
+	</div>
+	{/* Viñeta: el tubo se apaga en los bordes */}
+	<div
+		class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_52%,rgba(0,0,0,0.55)_100%)]"
+	>
+	</div>
+</div>

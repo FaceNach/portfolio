@@ -1,26 +1,44 @@
 ---
-import { about } from "../data/portfolio";
+import t from "../i18n/dataEs";
 ---
 
 <section
-	id="about"
-	class="scroll-mt-[65px] border-t border-faint/20 px-6 py-[88px] md:px-12 md:py-[140px]"
+	id="sobre"
+	class="scroll-mt-4 border-t border-amber/15 px-5 py-14 sm:px-8 md:px-14 md:py-20"
 >
-	<div
-		class="mx-auto grid max-w-[1100px] items-start gap-10 md:grid-cols-[280px_1fr] md:gap-16"
-	>
-		<h3
-			class="font-display text-[40px] leading-[1.04] font-bold italic md:text-[56px]"
+	<div class="mx-auto max-w-[72rem]">
+		<p class="font-mono text-xs tracking-[0.14em] text-amber">
+			{t.about.label}
+		</p>
+		<h2
+			class="mt-3 font-mono text-2xl font-medium tracking-[-0.02em] text-bone sm:text-3xl"
 		>
-			<span class="text-gold">Sobre</span><br />
-			<span class="text-muted">mí</span>
-		</h3>
-		<div class="space-y-[18px]">
-			{
-				about.map((paragraph) => (
-					<p class="text-base leading-[1.8] text-muted">{paragraph}</p>
-				))
-			}
+			{t.about.heading}
+		</h2>
+
+		<div class="mt-8 grid gap-8 md:grid-cols-[minmax(0,1fr)_20rem] md:gap-14">
+			<div class="max-w-[62ch] space-y-5">
+				{
+					t.about.body.map((paragraph) => (
+						<p class="text-[15px] leading-[1.8] text-bone sm:text-base">
+							{paragraph}
+						</p>
+					))
+				}
+			</div>
+
+			<dl
+				class="h-fit divide-y divide-amber/10 border border-amber/20 bg-panel font-mono text-xs"
+			>
+				{
+					t.about.facts.map((fact) => (
+						<div class="flex items-baseline justify-between gap-4 px-4 py-3">
+							<dt class="text-faint">{fact.key}</dt>
+							<dd class="text-right text-amber">{fact.value}</dd>
+						</div>
+					))
+				}
+			</dl>
 		</div>
 	</div>
 </section>

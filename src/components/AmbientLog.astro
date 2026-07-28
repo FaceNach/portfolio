@@ -1,0 +1,55 @@
+---
+/**
+ * PLACEHOLDER — fondo animado del hero.
+ *
+ * Log de jobs en deriva lenta, generado en código: cero assets, pesa unos KB y
+ * se apaga solo con prefers-reduced-motion. Es el stand-in del video/GIF: para
+ * reemplazarlo, cambiá este componente por el <video> y mantené el mismo
+ * contenedor (absolute inset-0, aria-hidden, detrás del contenido del hero).
+ */
+
+// LCG con semilla fija: mismo log en cada build, sin dependencias.
+let seed = 20260728;
+const rnd = () => ((seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648);
+const pick = <T,>(xs: readonly T[]) => xs[Math.floor(rnd() * xs.length)]!;
+
+const ops = [
+	"SUBMIT",
+	"ALLOC ",
+	"EXEC  ",
+	"READ  ",
+	"WRITE ",
+	"FLUSH ",
+	"COMMIT",
+	"SPAWN ",
+	"ACK   ",
+	"CLOSE ",
+] as const;
+
+const tails = [
+	"queue=batch pri=4",
+	"mem=512M cpu=2",
+	"rows=18422 rc=0",
+	"fd=7 bytes=4096",
+	"conn=pg pool=8/16",
+	"retry=0 rc=0",
+	"lat=12ms rc=0",
+	"seg=3 of 3 rc=0",
+] as const;
+
+const lines = Array.from({ length: 64 }, (_, i) => {
+	const mins = String(14 + Math.floor(i / 6)).padStart(2, "0");
+	const secs = String(Math.floor(rnd() * 60)).padStart(2, "0");
+	const job = String(400 + Math.floor(rnd() * 90)).padStart(4, "0");
+	return `06:${mins}:${secs}  JOB${job}  ${pick(ops)}  ${pick(tails)}`;
+});
+---
+
+<div
+	class="pointer-events-none absolute inset-0 overflow-hidden select-none [mask-image:linear-gradient(to_bottom,transparent,black_18%,black_62%,transparent)]"
+	aria-hidden="true"
+>
+	<pre
+		class="animate-drift m-0 font-mono text-[11px] leading-[1.9] whitespace-pre text-amber/[0.07]">{lines.join("\n")}
+{lines.join("\n")}</pre>
+</div>
