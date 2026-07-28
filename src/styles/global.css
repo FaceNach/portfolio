@@ -101,6 +101,13 @@
 	text-shadow: 0 0 24px color-mix(in srgb, var(--color-amber) 30%, transparent);
 }
 
+/* El atributo `hidden` tiene que ganarle a las utilidades de display: `.flex`
+   y `[hidden]` tienen la misma especificidad, así que sin esto un elemento con
+   `class="flex" hidden` se sigue viendo. */
+[hidden] {
+	display: none !important;
+}
+
 /* Barra de scroll en ámbar, para la lista de proyectos. */
 @utility scroll-amber {
 	scrollbar-width: thin;

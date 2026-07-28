@@ -29,6 +29,16 @@ const shotsFor = (slug: string, names: string[]) =>
 	names
 		.map((name) => files[`/src/imagenes/${slug}/${name}`]?.default)
 		.filter((img): img is ImageMetadata => Boolean(img));
+
+// Altura del bloque en desktop. Va explícita en las dos columnas en vez de
+// heredarse desde el grid: si un solo eslabón de `h-full` no resuelve, el panel
+// crece libre y se sale de la sección. Es la única perilla de esta sección.
+//
+// Está calibrada para que la derecha entre entera sin scrollear (imagen + barra
+// de tecnologías + título + detalle + nota + links ≈ 37rem) y para que las 10
+// filas de la izquierda (4,5rem cada una = 45rem) NO entren: ahí sí queremos
+// scroll. Si la subís, revisá que la izquierda siga pasándose.
+const PANE = "lg:h-[38rem]";
 ---
 
 <section
@@ -46,11 +56,14 @@ const shotsFor = (slug: string, names: string[]) =>
 		</h2>
 
 		<div
-			class="mt-8 grid gap-8 lg:h-[28rem] lg:grid-cols-[minmax(0,17rem)_minmax(0,1fr)] lg:gap-10"
+			class="mt-8 grid gap-8 lg:grid-cols-[minmax(0,17rem)_minmax(0,1fr)] lg:gap-10"
 		>
 			{/* Selector */}
 			<div
-				class="scroll-amber max-h-[15rem] overflow-y-auto border-y border-amber/15 lg:h-full lg:max-h-none"
+				class:list={[
+					"scroll-amber max-h-[17rem] overflow-y-auto border-y border-amber/15 lg:max-h-none",
+					PANE,
+				]}
 			>
 				{
 					t.projectList.map((project, i) => (
@@ -58,7 +71,7 @@ const shotsFor = (slug: string, names: string[]) =>
 							type="button"
 							data-project-pick={i}
 							aria-current={i === 0 ? "true" : "false"}
-							class="group flex w-full cursor-pointer items-center gap-3 border-b border-amber/10 px-3 py-3 text-left transition-colors last:border-b-0 hover:bg-amber/5 aria-[current=true]:bg-amber/10"
+							class="group flex w-full cursor-pointer items-center gap-3 border-b border-amber/10 px-4 py-6 text-left transition-colors last:border-b-0 hover:bg-amber/5 aria-[current=true]:bg-amber/10"
 						>
 							<span
 								class="text-amber opacity-0 transition-opacity group-aria-[current=true]:opacity-100"
@@ -66,7 +79,7 @@ const shotsFor = (slug: string, names: string[]) =>
 							>
 								▸
 							</span>
-							<span class="font-mono text-sm text-muted group-aria-[current=true]:text-amber-hi">
+							<span class="font-mono text-base text-muted group-aria-[current=true]:text-amber-hi">
 								{project.name}
 							</span>
 						</button>
@@ -74,8 +87,8 @@ const shotsFor = (slug: string, names: string[]) =>
 				}
 			</div>
 
-			{/* Panel */}
-			<div class="lg:h-full">
+			{/* Panel — overflow-hidden es el tope duro: nada puede salirse de acá */}
+			<div class:list={["lg:overflow-hidden", PANE]}>
 				{
 					t.projectList.map((project, i) => {
 						const shots = shotsFor(project.slug, project.images);
@@ -89,7 +102,7 @@ const shotsFor = (slug: string, names: string[]) =>
 								{/* object-contain, no cover: las capturas vienen con relaciones
 								    distintas (código alto, consola ancha) y recortarlas sería peor
 								    que dejar que el fondo oscuro haga de marco. */}
-								<div class="relative h-[13rem] shrink-0 overflow-hidden border border-amber/20 bg-cell sm:h-[15rem]">
+								<div class="relative h-[14rem] shrink-0 overflow-hidden border border-amber/20 bg-cell sm:h-[16rem]">
 									{shots.length > 0 ? (
 										shots.map((shot, k) => (
 											<Image
@@ -145,19 +158,19 @@ const shotsFor = (slug: string, names: string[]) =>
 
 								{/* min-h-0 es lo que deja que este hijo flex se encoja y scrollee */}
 								<div class="scroll-amber mt-4 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:pr-3">
-									<h3 class="font-mono text-lg text-amber-hi">{project.name}</h3>
+									<h3 class="font-mono text-xl text-amber-hi">{project.name}</h3>
 
-									<p class="mt-3 font-mono text-[11px] tracking-[0.1em] text-faint">
+									<p class="mt-4 font-mono text-[11px] tracking-[0.1em] text-faint">
 										{t.projects.detailLabel}
 									</p>
-									<p class="mt-1.5 max-w-[62ch] text-[15px] leading-[1.7] text-bone">
+									<p class="mt-2 max-w-[62ch] text-base leading-[1.7] text-bone">
 										{project.detail}
 									</p>
 
-									<p class="mt-4 font-mono text-[11px] tracking-[0.1em] text-faint">
+									<p class="mt-5 font-mono text-[11px] tracking-[0.1em] text-faint">
 										{t.projects.noteLabel}
 									</p>
-									<p class="mt-1.5 max-w-[62ch] text-[15px] leading-[1.7] text-muted">
+									<p class="mt-2 max-w-[62ch] text-base leading-[1.7] text-muted">
 										{project.note}
 									</p>
 
