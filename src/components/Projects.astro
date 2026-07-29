@@ -1,20 +1,6 @@
 ---
-import { Image } from "astro:assets";
-import type { ImageMetadata } from "astro";
 import { techByName } from "../data/tech";
 import t from "../i18n/dataEs";
-
-const files = import.meta.glob<{ default: ImageMetadata }>(
-	"/src/imagenes/**/*.{png,jpg,jpeg,webp,avif}",
-	{ eager: true },
-);
-
-const shotsFor = (slug: string, names: string[]) =>
-	names
-		.map((name) => files[`/src/imagenes/${slug}/${name}`]?.default)
-		.filter((img): img is ImageMetadata => Boolean(img));
-
-const PANE = "lg:h-[38rem]";
 ---
 
 <section
@@ -31,181 +17,113 @@ const PANE = "lg:h-[38rem]";
 			{t.projects.heading}
 		</h2>
 
-		<div
-			class="mt-8 grid gap-8 lg:grid-cols-[minmax(0,17rem)_minmax(0,1fr)] lg:gap-10"
-		>
-			<div
-				class:list={[
-					"scroll-amber max-h-[17rem] overflow-y-auto border-y border-amber/15 lg:max-h-none",
-					PANE,
-				]}
-			>
-				{
-					t.projectList.map((project, i) => (
-						<button
-							type="button"
-							data-project-pick={i}
-							aria-current={i === 0 ? "true" : "false"}
-							class="group flex w-full cursor-pointer items-center gap-3 border-b border-amber/10 px-4 py-6 text-left transition-colors last:border-b-0 hover:bg-amber/5 aria-[current=true]:bg-amber/10"
+		<ul class="mt-10 border-t border-amber/15">
+			{
+				t.projectList.map((project, i) => (
+					<li class="border-b border-amber/15">
+						<details
+							id={project.slug}
+							open={i === 0}
+							class="group scroll-mt-14 open:bg-amber/[0.03]"
 						>
-							<span
-								class="text-amber opacity-0 transition-opacity group-aria-[current=true]:opacity-100"
-								aria-hidden="true"
-							>
-								▸
-							</span>
-							<span class="font-mono text-base text-muted group-aria-[current=true]:text-amber-hi">
-								{project.name}
-							</span>
-						</button>
-					))
-				}
-			</div>
+							<summary class="flex cursor-pointer list-none flex-wrap items-center gap-x-4 gap-y-2 px-2 py-4 transition-colors hover:bg-amber/5 [&::-webkit-details-marker]:hidden">
+								<span
+									class="font-mono text-xs text-amber transition-transform group-open:rotate-90"
+									aria-hidden="true"
+								>
+									▸
+								</span>
+								<h3 class="font-mono text-lg text-amber-hi sm:text-xl">
+									{project.name}
+								</h3>
 
-			<div class:list={["lg:overflow-hidden", PANE]}>
-				{
-					t.projectList.map((project, i) => {
-						const shots = shotsFor(project.slug, project.images);
-
-						return (
-							<div
-								data-project-panel={i}
-								hidden={i !== 0}
-								class="flex flex-col lg:h-full"
-							>
-								<div class="relative h-[14rem] shrink-0 overflow-hidden border border-amber/20 bg-cell sm:h-[16rem]">
-									{shots.length > 0 ? (
-										shots.map((shot, k) => (
-											<Image
-												src={shot}
-												alt={`${project.name} — ${t.projects.shotLabel} ${k + 1}`}
-												data-shot={k}
-												hidden={k !== 0}
-												loading={i === 0 && k === 0 ? "eager" : "lazy"}
-												class="size-full object-contain"
-											/>
-										))
-									) : (
-										<div class="flex size-full items-center justify-center font-mono text-xs text-faint">
-											{t.projects.noImage}
-										</div>
-									)}
-								</div>
-
-								{shots.length > 1 && (
-									<div class="mt-2 flex shrink-0 gap-2">
-										{shots.map((_, k) => (
-											<button
-												type="button"
-												data-shot-pick={k}
-												aria-current={k === 0 ? "true" : "false"}
-												aria-label={`${t.projects.shotLabel} ${k + 1}`}
-												class="h-1 flex-1 cursor-pointer bg-amber/20 transition-colors hover:bg-amber/40 aria-[current=true]:bg-amber"
-											/>
-										))}
-									</div>
-								)}
-
-								<div class="mt-3 flex shrink-0 flex-wrap items-center gap-x-5 gap-y-2 border-y border-amber/15 py-2.5">
+								<span class="flex w-full flex-wrap items-center gap-x-4 gap-y-1.5 sm:ml-auto sm:w-auto sm:pl-4">
 									{project.tech.map((name) => {
 										const item = techByName.get(name);
 										return (
-											<span class="flex items-center gap-2">
+											<span class="flex items-center gap-1.5">
 												{item?.icon && (
 													<svg
 														viewBox="0 0 24 24"
-														class="size-4 shrink-0 fill-amber/70"
+														class="size-3.5 shrink-0 fill-amber/70"
 														aria-hidden="true"
 													>
 														<path d={item.icon.path} />
 													</svg>
 												)}
-												<span class="font-mono text-xs text-muted">{name}</span>
+												<span class="font-mono text-[11px] text-muted">
+													{name}
+												</span>
 											</span>
 										);
 									})}
-								</div>
+								</span>
+							</summary>
 
-								<div class="scroll-amber mt-4 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:pr-3">
-									<h3 class="font-mono text-xl text-amber-hi">{project.name}</h3>
-
-									<p class="mt-4 font-mono text-[11px] tracking-[0.1em] text-faint">
+							<div class="grid gap-x-10 gap-y-5 px-2 pt-1 pb-7 sm:grid-cols-2 sm:pl-8">
+								<div>
+									<p class="font-mono text-[11px] tracking-[0.1em] text-faint">
 										{t.projects.detailLabel}
 									</p>
-									<p class="mt-2 max-w-[62ch] text-base leading-[1.7] text-bone">
+									<p class="mt-2 max-w-[52ch] text-[15px] leading-[1.7] text-bone">
 										{project.detail}
 									</p>
+								</div>
 
-									<p class="mt-5 font-mono text-[11px] tracking-[0.1em] text-faint">
+								<div>
+									<p class="font-mono text-[11px] tracking-[0.1em] text-faint">
 										{t.projects.noteLabel}
 									</p>
-									<p class="mt-2 max-w-[62ch] text-base leading-[1.7] text-muted">
+									<p class="mt-2 max-w-[52ch] text-[15px] leading-[1.7] text-muted">
 										{project.note}
 									</p>
+								</div>
 
-									<div class="mt-5 flex flex-wrap gap-x-6 gap-y-2 pb-1 font-mono text-xs">
-										{project.url && (
-											<a
-												href={project.url}
-												class="text-amber underline-offset-4 hover:text-amber-hi hover:underline"
-											>
-												{t.projects.visit} →
-											</a>
-										)}
-										{project.repo && (
-											<a
-												href={project.repo}
-												class="text-amber underline-offset-4 hover:text-amber-hi hover:underline"
-											>
-												{t.projects.source} →
-											</a>
-										)}
-										{!project.url && !project.repo && (
-											<span class="text-faint">{t.projects.noLinks}</span>
-										)}
-									</div>
+								<div class="flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs sm:col-span-2">
+									{project.url && (
+										<a
+											href={project.url}
+											target="_blank"
+											rel="noopener noreferrer"
+											class="text-amber underline-offset-4 hover:text-amber-hi hover:underline"
+										>
+											{t.projects.visit} →
+										</a>
+									)}
+									{project.repo && (
+										<a
+											href={project.repo}
+											target="_blank"
+											rel="noopener noreferrer"
+											class="text-amber underline-offset-4 hover:text-amber-hi hover:underline"
+										>
+											{t.projects.source} →
+										</a>
+									)}
+									{!project.url && !project.repo && (
+										<span class="text-faint">{t.projects.noLinks}</span>
+									)}
 								</div>
 							</div>
-						);
-					})
-				}
-			</div>
-		</div>
+						</details>
+					</li>
+				))
+			}
+		</ul>
 	</div>
 </section>
 
 <script>
-	const picks = document.querySelectorAll<HTMLButtonElement>(
-		"[data-project-pick]",
-	);
-	const panels = document.querySelectorAll<HTMLElement>("[data-project-panel]");
-
-	for (const pick of picks) {
-		pick.addEventListener("click", () => {
-			const index = pick.dataset.projectPick;
-			for (const other of picks) {
-				other.setAttribute("aria-current", String(other === pick));
-			}
-			for (const panel of panels) {
-				panel.hidden = panel.dataset.projectPanel !== index;
-			}
-		});
-	}
-
-	for (const panel of panels) {
-		const bars = panel.querySelectorAll<HTMLButtonElement>("[data-shot-pick]");
-		const shots = panel.querySelectorAll<HTMLElement>("[data-shot]");
-
-		for (const bar of bars) {
-			bar.addEventListener("click", () => {
-				const index = bar.dataset.shotPick;
-				for (const other of bars) {
-					other.setAttribute("aria-current", String(other === bar));
-				}
-				for (const shot of shots) {
-					shot.hidden = shot.dataset.shot !== index;
-				}
-			});
+	const openFromHash = () => {
+		const id = decodeURIComponent(location.hash.slice(1));
+		if (!id) return;
+		const target = document.getElementById(id);
+		if (target instanceof HTMLDetailsElement) {
+			target.open = true;
+			target.scrollIntoView();
 		}
-	}
+	};
+
+	openFromHash();
+	window.addEventListener("hashchange", openFromHash);
 </script>

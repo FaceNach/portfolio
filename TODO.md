@@ -21,10 +21,10 @@ src/
     About.astro
     Stack.astro         lista + dos cintas de logos
     TechMarquee.astro   la cinta (prop `reverse` para la de abajo)
-    Projects.astro      lista scrolleable + panel
+    Projects.astro      filas <details>, la primera abierta
     Contact.astro
     StatusBar.astro     status line fijo abajo: sección actual + % (sin links)
-  imagenes/             capturas de proyectos (ver README ahí adentro)
+  imagenes/             OBSOLETA — quedó vacía, ver "sin capturas" abajo
 ```
 
 Ningún componente lleva texto hardcodeado: todo sale de `dataEs.ts`.
@@ -41,19 +41,19 @@ cualquier ajuste de tipografía.
 `about.body` sigue siendo el párrafo del CV partido en dos. Funciona, pero es
 registro de CV, no voz propia.
 
-### 2. Imágenes de proyectos
+### 2. Peso de la página
 
-Van en `src/imagenes/<slug>/`, hasta 3 por proyecto, y se declaran en el campo
-`images` del proyecto. Ver `src/imagenes/README.md` para la convención y por qué
-van en `src/` y no en `public/`.
+`dist/index.html` pesa **78,6 KB gzippeados**, y el 77% son paths de SVG
+inlineados. Hay 135 `<path>` en la página: la cinta de tecnologías duplica el set
+para que el bucle cierre, y hay dos cintas, así que cada logo aparece 4 veces —
+más una vez por cada proyecto que usa esa tecnología.
 
-El sitio compila con cero imágenes — hoy todos muestran el placeholder "sin
-captura".
+El arreglo es un sprite: definir cada icono una sola vez en un `<svg>` oculto con
+`<symbol id="...">` y referenciarlo con `<use href="#...">`. Pasaría de 135 paths
+a ~30. Estimado: 78 KB → ~25 KB.
 
-Para proyectos sin pantalla (backend, integraciones, automatizaciones): sirve
-una captura de código, una salida de consola o un diagrama de arquitectura. En
-un sitio que ya parece un monitor de fósforo, una terminal se ve más nativa que
-la captura de un navegador.
+No está hecho. No es urgente para un sitio de una página, pero es la optimización
+con mejor relación esfuerzo/beneficio que queda.
 
 ### 3. Inglés
 
@@ -103,6 +103,39 @@ personificado.** Plano y descriptivo.
   `ELAPSED`). Nach lo rechazó explícitamente.
 - **Se eliminó el mock de navegador con iframes** del diseño original: la mitad
   de los sitios bloquean el embebido y un proyecto a 640px es ilegible.
+- **Proyectos va sin capturas y sin maestro-detalle.** Decidido el 29/07/2026.
+  Nach no tiene capturas y sacarlas exigía clonar, levantar bases y resucitar
+  proyectos viejos (uno es de Unity) para terminar con un PNG que igual no prueba
+  nada: en trabajo de backend la captura muestra la carcasa, no la decisión. Sin
+  imagen, el panel a la derecha se quedaba sin motivo — existía para alojarla— y
+  el maestro-detalle solo aportaba su costo: esconder 9 de cada 10 proyectos
+  detrás de un clic que un reclutador que escanea no hace. Se fueron con la
+  imagen la constante `PANE`, el malabar con `hidden`, el carrusel y
+  `astro:assets`.
+
+  Primero quedó un `<ol>` plano con todo desplegado, y **Nach lo rechazó por
+  largo**: 10 proyectos × 250px = 2500px. La versión de ahora es una fila
+  `<details>`/`<summary>` por proyecto — nombre y tecnologías siempre visibles,
+  el resto se despliega. Baja a ~765px. **La primera va abierta a propósito**
+  (`open={i === 0}`): si están todas cerradas no se ve qué hay adentro ni se
+  entiende que la fila se abre.
+
+  Es plegado nativo, sin librería. El único JS es abrir la fila que apunta el
+  hash (ver abajo). Si tocás el `<summary>`, ojo con `list-none` +
+  `[&::-webkit-details-marker]:hidden`: hacen falta las dos para matar el
+  triangulito por defecto, una no alcanza.
+- **Cada proyecto tiene su propio anclaje** (`id={project.slug}` en el
+  `<details>`). El `slug` había quedado sin consumidor al irse las imágenes; en
+  vez de borrarlo ahora sirve para mandarle a alguien un proyecto puntual
+  (`/#gateway-pagos`). Lleva `scroll-mt-14` por el header fijo, igual que las
+  secciones.
+
+  **Por eso hay un `<script>` en `Projects.astro`.** Un `<details>` cerrado no se
+  abre solo al navegarle el fragmento, así que un link profundo caía en una fila
+  cerrada y no mostraba nada — un anclaje que no muestra el contenido está roto.
+  Son seis líneas: leen el hash, y si apunta a un `HTMLDetailsElement` lo abren y
+  scrollean. Escucha `hashchange` además del load, para cuando ya estás en la
+  página.
 - ~~**Nav abajo, no arriba.**~~ **Revertido el 29/07/2026.** La navegación se
   movió al `Header` fijo arriba. El argumento que la tumbó: Nach construyó el
   sitio y no había registrado la barra de abajo como navegación — si al autor se
@@ -118,17 +151,11 @@ personificado.** Plano y descriptivo.
 
 ## Perillas y trampas del código
 
-**`Projects.astro` — la constante `PANE`.** Hoy `lg:h-[38rem]`. Está calibrada
-para que la derecha entre entera sin scroll (~37,1rem) y para que las 10 filas
-de la izquierda (45,6rem) NO entren, porque ahí sí se quiere scroll. **La
-ventana útil es 38–45rem:** por debajo scrollea la derecha, por encima deja de
-scrollear la izquierda. Si el contenido real es más largo que el placeholder,
-va a haber que subirla.
-
-**`[hidden] { display: none !important }` en `global.css`.** No es un parche
-suelto: `.flex` y `[hidden]` tienen la misma especificidad, así que sin esa
-regla un elemento con `class="flex" hidden` se sigue viendo. Ya causó un bug de
-los paneles de proyectos renderizándose todos apilados. No borrar.
+**`[hidden] { display: none !important }` en `global.css`.** Hoy no la usa nadie
+—el maestro-detalle que la necesitaba ya no existe— pero se deja porque es un
+default correcto: `.flex` y `[hidden]` tienen la misma especificidad, así que sin
+esa regla un elemento con `class="flex" hidden` se sigue viendo. Ya causó un bug
+una vez.
 
 **`TechMarquee` — el `-50%`.** El bucle cierra sin salto porque la pista lleva
 el set duplicado y cada celda usa `pr-10` en vez de `gap`. Si se cambia a `gap`,
@@ -149,6 +176,12 @@ mitad de la carga. Perillas: `width` (grosor), `height` (alto), `margin-left`
 `animation-delay: 760ms` está calculado para que arranque cuando el `<h1>`
 termina de entrar (160ms de `--d` + 550ms de `rise`): si tocás esos dos, tocá
 este también.
+
+**El logo del header y `public/favicon.svg` son la misma marca, duplicada.** El
+favicon es un SVG con `<text>`; el header la reconstruye con CSS (`size-6`,
+`rounded-[5px]`, `bg-ink`, borde `amber/40`) para poder usar la webfont del sitio
+y el hover, cosas que un SVG inline no te da. No están enlazados: si cambiás una,
+cambiá la otra a mano.
 
 **Header fijo ⇄ `scroll-mt-14` en las secciones.** El header mide `h-10`
 (2,5rem); el `scroll-mt-14` (3,5rem) de cada `<section>` es eso más 1rem de
@@ -186,13 +219,32 @@ Solo GitHub sale del paquete. El sobre necesita `fill-rule="evenodd"` en el
 stack. Es a propósito: ahí son links y así el icono acompaña el color del hover
 en vez de quedarse quieto mientras el texto cambia.
 
-**El observer de sección actual vive en `Header.astro`, no en `StatusBar`.** Es
-uno solo y publica en dos lados: `aria-current` de sus links y el texto de
-`#status-section`. La referencia al status es opcional a propósito — si se saca
-el `StatusBar`, el header sigue andando. Acumula en un `Set` quién está visible
-porque el `IntersectionObserver` avisa de los *cambios*, no del estado completo;
-mirando sólo el lote de cada llamada, volver al hero dejaba la última sección
-marcada para siempre.
+**La sección actual se calcula por posición de scroll, NO con
+`IntersectionObserver`.** La lógica vive en `Header.astro` y publica en dos
+lados: `aria-current` de sus links y el texto de `#status-section`. La referencia
+al status es opcional a propósito — si se saca el `StatusBar`, el header sigue
+andando.
+
+Hubo un `IntersectionObserver` con `rootMargin: "-20% 0px -60% 0px"` y **se sacó
+porque estaba roto**. Esa config arma una banda de detección entre el 20% y el
+40% del alto de la ventana, y eso falla de dos formas:
+
+- **La última sección nunca se activa.** Al saltar a contacto la página llega al
+  tope de scroll, contacto queda pegado abajo de la ventana y la banda cae sobre
+  proyectos. Para tocar la banda, la última sección tendría que medir más del 60%
+  del alto de la ventana.
+- **Cuando dos secciones tocan la banda gana la equivocada**, porque ordenaba por
+  `top` ascendente y la sección que ya scrolleaste tiene el `top` más negativo.
+
+La versión de ahora: recorre las secciones en orden y se queda con **la última
+cuyo `top` ya cruzó `TRIGGER`** (96px, tiene que ser mayor que los 56px del
+`scroll-mt-14` o al hacer clic la sección destino no se marca), con un caso
+especial que fuerza la última sección cuando estás al fondo del documento. Ese
+caso especial *es* el arreglo del primer bug — no lo saques.
+
+Hay una simulación de la lógica en el historial: da la posición de scroll de cada
+anclaje y compara qué sección marca cada versión. Si volvés a tocar esto, conviene
+rehacerla antes que probar a ojo.
 
 **La fecha de `hero.lastSession` es la del build, no la del visitante.** El sitio
 es estático: `new Date()` corre en `astro build` y queda fija en el HTML hasta el

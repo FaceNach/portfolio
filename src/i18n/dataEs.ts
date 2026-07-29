@@ -6,7 +6,6 @@ export interface Project {
 	slug: string;
 	name: string;
 	tech: string[];
-	images: string[];
 	detail: string;
 	note: string;
 	url: string | null;
@@ -100,8 +99,6 @@ const es = {
 		visit: "ver en vivo",
 		source: "código",
 		noLinks: "sin link público",
-		noImage: "sin captura",
-		shotLabel: "captura",
 	},
 
 	contact: {
@@ -125,7 +122,6 @@ const es = {
 			slug: "api-inventario",
 			name: "API de inventario",
 			tech: ["C#", ".NET", "PostgreSQL", "Docker"],
-			images: [],
 			detail:
 				"[Placeholder] API REST para control de stock en tiempo real, con autenticación y roles por sucursal.",
 			note: "[Placeholder] Contá acá el problema difícil: la condición de carrera que resolviste, la decisión de modelado que cambió todo, el número que mejoró.",
@@ -136,7 +132,6 @@ const es = {
 			slug: "sistema-turnos",
 			name: "Sistema de turnos",
 			tech: ["Node.js", "TypeScript", "MySQL", "Docker"],
-			images: [],
 			detail:
 				"[Placeholder] Gestión de turnos con notificaciones automáticas y agenda por profesional.",
 			note: "[Placeholder] Qué aprendiste manejando husos horarios, recordatorios y cancelaciones tardías.",
@@ -147,7 +142,6 @@ const es = {
 			slug: "buscador-semantico",
 			name: "Buscador semántico",
 			tech: ["Go", "ChromaDB", "PostgreSQL"],
-			images: [],
 			detail:
 				"[Placeholder] Búsqueda por similitud sobre documentos internos, con embeddings en base vectorial.",
 			note: "[Placeholder] Cómo mediste si los resultados eran buenos.",
@@ -158,7 +152,6 @@ const es = {
 			slug: "gateway-pagos",
 			name: "Gateway de pagos",
 			tech: ["C#", ".NET", "RabbitMQ", "SQL"],
-			images: [],
 			detail:
 				"[Placeholder] Integración con pasarelas de pago y conciliación automática de movimientos.",
 			note: "[Placeholder] Idempotencia, reintentos y qué pasa cuando la pasarela responde dos veces.",
@@ -169,7 +162,6 @@ const es = {
 			slug: "automatizaciones",
 			name: "Automatizaciones internas",
 			tech: ["n8n", "Node.js", "Supabase"],
-			images: [],
 			detail:
 				"[Placeholder] Workflows que reemplazaron tareas manuales recurrentes del equipo.",
 			note: "[Placeholder] Cuántas horas por semana dejó de hacer alguien a mano.",
@@ -180,7 +172,6 @@ const es = {
 			slug: "migrador-datos",
 			name: "Migrador de datos",
 			tech: ["Go", "MongoDB", "PostgreSQL", "Kubernetes"],
-			images: [],
 			detail:
 				"[Placeholder] CLI para migrar datos entre una base legacy y el esquema nuevo.",
 			note: "[Placeholder] El registro sucio que te obligó a repensar la validación entera.",
@@ -191,7 +182,6 @@ const es = {
 			slug: "panel-metricas",
 			name: "Panel de métricas",
 			tech: ["TypeScript", "React", "PostgreSQL", "Docker"],
-			images: [],
 			detail:
 				"[Placeholder] Dashboard interno de monitoreo de servicios con alertas por umbral.",
 			note: "[Placeholder] Qué métrica resultó ser la que de verdad avisaba antes de que algo se cayera.",
@@ -202,7 +192,6 @@ const es = {
 			slug: "integracion-erp",
 			name: "Integración con ERP",
 			tech: ["C#", ".NET", "RabbitMQ", "SQL"],
-			images: [],
 			detail:
 				"[Placeholder] Sincronización de maestros y comprobantes entre el ERP y los servicios propios.",
 			note: "[Placeholder] Cómo manejaste que el ERP no siempre estuviera disponible.",
@@ -213,7 +202,6 @@ const es = {
 			slug: "scraper-precios",
 			name: "Scraper de precios",
 			tech: ["Go", "Redis", "Docker", "Kubernetes"],
-			images: [],
 			detail:
 				"[Placeholder] Relevamiento periódico de precios de la competencia, con cache y reintentos.",
 			note: "[Placeholder] El límite de rate que te obligó a repensar la estrategia de scheduling.",
@@ -224,7 +212,6 @@ const es = {
 			slug: "prototipo-unity",
 			name: "Prototipo en Unity",
 			tech: ["Unity", "C#"],
-			images: [],
 			detail:
 				"[Placeholder] Prototipo jugable armado para probar una mecánica concreta.",
 			note: "[Placeholder] Qué te llevaste de trabajar con un loop de frames en vez de request/response.",
