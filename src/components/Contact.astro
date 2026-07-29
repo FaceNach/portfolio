@@ -1,7 +1,20 @@
 ---
 import t from "../i18n/dataEs";
+import { ICON_GITHUB, ICON_LINKEDIN, ICON_MAIL } from "../data/icons";
 
 const year = new Date().getFullYear();
+
+const social = [
+	{ href: t.contact.github, label: t.contact.githubLabel, icon: ICON_GITHUB },
+	{ href: t.contact.linkedin, label: t.contact.linkedinLabel, icon: ICON_LINKEDIN },
+];
+
+const emailEncoded = Buffer.from(t.contact.email, "utf8").toString("base64");
+
+const itemClass =
+	"group flex cursor-pointer items-center gap-2.5 text-amber transition-colors hover:text-amber-hi";
+const iconClass = "size-4 shrink-0 fill-current";
+const labelClass = "underline-offset-4 group-hover:underline";
 ---
 
 <section
@@ -21,24 +34,46 @@ const year = new Date().getFullYear();
 			{t.contact.body}
 		</p>
 
-		<a
-			href={`mailto:${t.contact.email}`}
-			class="mt-8 inline-block font-mono text-[clamp(1.25rem,4.5vw,2.25rem)] text-amber underline-offset-[6px] transition-colors hover:text-amber-hi hover:underline phosphor"
+		<div
+			class="relative mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 font-mono text-base"
 		>
-			{t.contact.email}
-		</a>
+			<button
+				type="button"
+				id="copy-mail"
+				data-email={emailEncoded}
+				data-copied={t.contact.emailCopied}
+				data-failed={t.contact.emailFailed}
+				aria-label={t.contact.emailAction}
+				class={itemClass}
+			>
+				<svg viewBox="0 0 24 24" class={iconClass} aria-hidden="true">
+					<path fill-rule="evenodd" d={ICON_MAIL} />
+				</svg>
+				<span class={labelClass}>{t.contact.emailLabel}</span>
+			</button>
 
-		<div class="mt-10 flex flex-wrap gap-x-8 gap-y-3 font-mono text-sm">
-			<a
-				href={t.contact.github}
-				class="text-muted underline-offset-4 transition-colors hover:text-amber hover:underline"
-				>{t.contact.githubLabel} →</a
-			>
-			<a
-				href={t.contact.linkedin}
-				class="text-muted underline-offset-4 transition-colors hover:text-amber hover:underline"
-				>{t.contact.linkedinLabel} →</a
-			>
+			{
+				social.map((item) => (
+					<a
+						href={item.href}
+						target="_blank"
+						rel="noopener noreferrer"
+						class={itemClass}
+					>
+						<svg viewBox="0 0 24 24" class={iconClass} aria-hidden="true">
+							<path d={item.icon} />
+						</svg>
+						<span class={labelClass}>{item.label} →</span>
+					</a>
+				))
+			}
+
+			<span
+				id="copy-toast"
+				role="status"
+				aria-live="polite"
+				class="pointer-events-none absolute -top-9 left-0 border border-amber/40 bg-cell px-2.5 py-1 text-[11px] text-amber-hi opacity-0 transition-opacity duration-200"
+			></span>
 		</div>
 
 		<div
@@ -49,3 +84,45 @@ const year = new Date().getFullYear();
 		</div>
 	</div>
 </section>
+
+<script>
+	const button = document.getElementById("copy-mail");
+	const toast = document.getElementById("copy-toast");
+
+	if (button && toast) {
+		let timer: ReturnType<typeof setTimeout>;
+
+		const flash = (message: string) => {
+			toast.textContent = message;
+			toast.classList.remove("opacity-0");
+			clearTimeout(timer);
+			timer = setTimeout(() => toast.classList.add("opacity-0"), 2000);
+		};
+
+		const legacyCopy = (text: string) => {
+			const field = document.createElement("textarea");
+			field.value = text;
+			field.setAttribute("readonly", "");
+			field.style.position = "fixed";
+			field.style.opacity = "0";
+			document.body.append(field);
+			field.select();
+			const ok = document.execCommand("copy");
+			field.remove();
+			return ok;
+		};
+
+		button.addEventListener("click", async () => {
+			const email = atob(button.dataset.email!);
+			const copied = button.dataset.copied!;
+			const failed = button.dataset.failed!;
+
+			try {
+				await navigator.clipboard.writeText(email);
+				flash(copied);
+			} catch {
+				flash(legacyCopy(email) ? copied : `${failed} — ${email}`);
+			}
+		});
+	}
+</script>

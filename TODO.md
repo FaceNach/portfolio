@@ -155,6 +155,37 @@ este también.
 aire. Si cambiás el alto del header, las cuatro secciones van con él o los
 títulos quedan tapados al saltar por anclaje.
 
+**El mail no es un link, es un botón que copia — y nunca viaja en claro.** Es
+anti-spam, decisión de Nach. `Contact.astro` lo codifica en base64 en el build
+(`Buffer.from(...).toString("base64")`) y lo emite en `data-email`; el cliente lo
+decodifica con `atob` recién al hacer clic. Verificado: la dirección en claro
+aparece **0 veces** en `dist/index.html`. Si alguna vez volvés a poner un
+`mailto:` o a imprimir `t.contact.email` en el template, esto se cae y no te vas
+a enterar — el chequeo es `grep -c "ignacioijg@gmail" dist/index.html`.
+
+Es un badén, no un muro: frena al scraper que barre `mailto:` y regex de mails,
+no a alguien que ejecute el JS. El costo es que sin JS no hay forma de llegar al
+mail. Hay respaldo con `execCommand("copy")` para cuando `navigator.clipboard`
+no está (contexto no seguro), y si los dos fallan el toast muestra la dirección
+para copiarla a mano.
+
+**Los tres items de contacto comparten `itemClass`/`iconClass`/`labelClass`.**
+Están declaradas una vez en el frontmatter justamente para que no se puedan
+desincronizar — Nach pidió explícitamente que los tres se vean igual. El mail no
+lleva `→` y los otros dos sí: la flecha significa "te lleva a otro lado", y el
+mail no navega, copia.
+
+**Dos de los tres iconos de contacto están dibujados a mano, en
+`src/data/icons.ts`.** No es por capricho: **LinkedIn no existe en
+`simple-icons`** —lo sacaron del paquete por un pedido legal de la marca— y para
+un `mailto:` genérico el paquete solo trae marcas (Gmail, Mail.ru), no un sobre.
+Solo GitHub sale del paquete. El sobre necesita `fill-rule="evenodd"` en el
+`<path>`: el pliegue es un calado, sin eso se ve un rectángulo lleno.
+
+**Los iconos de contacto usan `fill-current`, no `fill-amber/70`** como los del
+stack. Es a propósito: ahí son links y así el icono acompaña el color del hover
+en vez de quedarse quieto mientras el texto cambia.
+
 **El observer de sección actual vive en `Header.astro`, no en `StatusBar`.** Es
 uno solo y publica en dos lados: `aria-current` de sus links y el texto de
 `#status-section`. La referencia al status es opcional a propósito — si se saca
