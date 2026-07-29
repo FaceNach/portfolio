@@ -9,10 +9,12 @@ Sitio en Astro + Tailwind v4, una sola página, estático. Estética de terminal
 
 ```
 src/
-  styles/global.css     paleta en @theme, utilidades phosphor/rise/scroll-amber
+  styles/global.css     paleta en @theme, utilidades phosphor/rise/caret/scroll-amber
   i18n/dataEs.ts        TODO el contenido del sitio, tipado como `Dict`
   data/tech.ts          registro único de tecnologías + logos
+  data/sections.ts      registro único de secciones navegables (id + label)
   components/
+    Header.astro        nav fijo arriba + dueño del observer de sección actual
     Hero.astro          banner de sesión, nombre, cursor
     AmbientLog.astro    fondo animado del hero (PLACEHOLDER)
     CrtOverlay.astro    scanlines + viñeta + deriva de brillo
@@ -21,7 +23,7 @@ src/
     TechMarquee.astro   la cinta (prop `reverse` para la de abajo)
     Projects.astro      lista scrolleable + panel
     Contact.astro
-    StatusBar.astro     ruler fijo abajo: sección actual + % de scroll
+    StatusBar.astro     status line fijo abajo: sección actual + % (sin links)
   imagenes/             capturas de proyectos (ver README ahí adentro)
 ```
 
@@ -101,7 +103,14 @@ personificado.** Plano y descriptivo.
   `ELAPSED`). Nach lo rechazó explícitamente.
 - **Se eliminó el mock de navegador con iframes** del diseño original: la mitad
   de los sitios bloquean el embebido y un proyecto a 640px es ilegible.
-- **Nav abajo, no arriba.** La `StatusBar` fija es deliberada.
+- ~~**Nav abajo, no arriba.**~~ **Revertido el 29/07/2026.** La navegación se
+  movió al `Header` fijo arriba. El argumento que la tumbó: Nach construyó el
+  sitio y no había registrado la barra de abajo como navegación — si al autor se
+  le pasa, a un visitante de 30 segundos también. En desktop una franja fina al
+  pie se lee como chrome del navegador, no como contenido. La resolución no fue
+  "arriba vs. abajo" sino que la barra hacía **dos trabajos**: mostrar estado y
+  navegar. Un status line de verdad (vim, tmux) muestra estado y no tiene links.
+  Se separaron: navegación arriba, estado abajo.
 - **CI/CD se sacó del stack** — era la práctica al lado de la herramienta con la
   que se hace (GitHub Actions).
 - **Logos en ámbar monocromo.** Con los colores de marca, veintipico de logos
@@ -131,6 +140,36 @@ descartar nada** (`techByName`) porque omitir C# de un proyecto hecho en C#
 sería mentir sobre el stack — ahí cae a etiqueta de texto.
 
 **Velocidad de las cintas:** `--animate-marquee` en `global.css`, hoy 60s.
+
+**El cursor del hero es una caja, no el glyph `▊`.** Está dibujado en la utility
+`caret` de `global.css` porque las medidas del glyph dependen de qué fuente
+terminó cargando, y con `display=swap` eso significaba que cambiaba de forma a
+mitad de la carga. Perillas: `width` (grosor), `height` (alto), `margin-left`
+(aire), todas en `em` para que sigan al `clamp()` del nombre. El
+`animation-delay: 760ms` está calculado para que arranque cuando el `<h1>`
+termina de entrar (160ms de `--d` + 550ms de `rise`): si tocás esos dos, tocá
+este también.
+
+**Header fijo ⇄ `scroll-mt-14` en las secciones.** El header mide `h-10`
+(2,5rem); el `scroll-mt-14` (3,5rem) de cada `<section>` es eso más 1rem de
+aire. Si cambiás el alto del header, las cuatro secciones van con él o los
+títulos quedan tapados al saltar por anclaje.
+
+**El observer de sección actual vive en `Header.astro`, no en `StatusBar`.** Es
+uno solo y publica en dos lados: `aria-current` de sus links y el texto de
+`#status-section`. La referencia al status es opcional a propósito — si se saca
+el `StatusBar`, el header sigue andando. Acumula en un `Set` quién está visible
+porque el `IntersectionObserver` avisa de los *cambios*, no del estado completo;
+mirando sólo el lote de cada llamada, volver al hero dejaba la última sección
+marcada para siempre.
+
+**La fecha de `hero.lastSession` es la del build, no la del visitante.** El sitio
+es estático: `new Date()` corre en `astro build` y queda fija en el HTML hasta el
+próximo deploy. Está armada a mano con el array `MESES` en vez de
+`toLocaleDateString()` porque esa depende del locale de la máquina que buildea
+(en la de Nach daba formato americano, y un runner de CI daría otro). Tampoco
+`toISOString()`, que es UTC y después de las 21:00 hora Argentina ya devuelve el
+día siguiente.
 
 ## Nota de método
 

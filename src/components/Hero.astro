@@ -10,7 +10,6 @@ import t from "../i18n/dataEs";
 	<AmbientLog />
 
 	<div class="relative mx-auto w-full max-w-[78ch]">
-		{/* Banner de sesión: el equivalente al motd que ves al entrar por ssh */}
 		<div
 			class="rise flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] text-faint sm:text-xs"
 			style="--d:0ms"
@@ -26,8 +25,8 @@ import t from "../i18n/dataEs";
 			style="--d:160ms"
 		>
 			{t.hero.nameFirst}<br />{t.hero.nameLast}<span
-				class="ml-1 inline-block w-[0.5em] animate-blink align-baseline text-amber-hi"
-				aria-hidden="true">▊</span
+				class="caret"
+				aria-hidden="true"></span
 			>
 		</h1>
 

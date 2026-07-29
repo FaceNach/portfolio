@@ -1,24 +1,12 @@
 ---
-/**
- * Cinta de tecnologías en desplazamiento continuo.
- *
- * Solo entran las que tienen logo (ver `src/data/tech.ts`). Los logos se
- * inlinean en el build y se pintan en ámbar monocromo: si cada marca trajera su
- * color, veintipico de logos corporativos romperían la paleta.
- *
- * El bloque es decorativo — el <dl> de Stack ya dice lo mismo de forma
- * semántica — así que va entero con aria-hidden.
- */
 import { TECH_WITH_ICON } from "../data/tech";
 
 interface Props {
-	/** Gira hacia el otro lado. Dos cintas iguales en el mismo sentido se leen como error. */
 	reverse?: boolean;
 }
 
 const { reverse = false } = Astro.props;
 
-// La pista duplicada hace que el bucle cierre sin salto.
 const track = [...TECH_WITH_ICON, ...TECH_WITH_ICON];
 ---
 
@@ -34,7 +22,6 @@ const track = [...TECH_WITH_ICON, ...TECH_WITH_ICON];
 	>
 		{
 			track.map((item) => (
-				/* pr en vez de gap: cada celda mide lo mismo y el -50% cae exacto */
 				<div class="flex shrink-0 items-center gap-2.5 pr-10">
 					<svg viewBox="0 0 24 24" class="size-[18px] shrink-0 fill-amber/70">
 						<path d={item.icon.path} />

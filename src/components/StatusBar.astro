@@ -1,70 +1,15 @@
----
-import t from "../i18n/dataEs";
-
-const sections = [
-	{ id: "sobre", label: t.nav.about },
-	{ id: "stack", label: t.nav.stack },
-	{ id: "proyectos", label: t.nav.projects },
-	{ id: "contacto", label: t.nav.contact },
-];
----
-
-{/* Ruler fijo abajo: navegación, sección actual y posición de lectura. */}
-<nav
-	class="fixed inset-x-0 bottom-0 z-50 flex h-8 items-center gap-3 border-t border-amber/25 bg-panel/95 px-3 font-mono text-[11px] backdrop-blur-sm sm:gap-5 sm:px-4"
-	aria-label="Navegación"
+<div
+	class="fixed inset-x-0 bottom-0 z-50 flex h-8 items-center gap-3 border-t border-amber/25 bg-panel/95 px-3 font-mono text-[11px] backdrop-blur-sm sm:px-4"
+	aria-hidden="true"
 >
-	<a
-		href="#top"
-		class="hidden shrink-0 text-amber no-underline hover:text-amber-hi sm:inline"
-		>IG.GUNST</a
+	<span id="status-section" class="min-w-0 flex-1 truncate text-amber"></span>
+	<span id="scroll-pct" class="w-9 shrink-0 text-right tabular-nums text-faint"
+		>0%</span
 	>
-
-	<div class="flex flex-1 items-center gap-3 overflow-x-auto sm:gap-5">
-		{
-			sections.map((s) => (
-				<a
-					href={`#${s.id}`}
-					data-nav-link={s.id}
-					class="shrink-0 text-faint no-underline transition-colors hover:text-bone aria-[current=true]:text-amber-hi"
-				>
-					{s.label}
-				</a>
-			))
-		}
-	</div>
-
-	<span class="shrink-0 text-faint">{t.localeLabel}</span>
-	<span
-		id="scroll-pct"
-		class="w-9 shrink-0 text-right tabular-nums text-faint">0%</span
-	>
-</nav>
+</div>
 
 <script>
-	const links = document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]");
 	const pct = document.getElementById("scroll-pct")!;
-	const sections = [...links]
-		.map((l) => document.getElementById(l.dataset.navLink!))
-		.filter((el): el is HTMLElement => el !== null);
-
-	const setCurrent = (id: string | null) => {
-		for (const link of links) {
-			link.setAttribute("aria-current", String(link.dataset.navLink === id));
-		}
-	};
-
-	const observer = new IntersectionObserver(
-		(entries) => {
-			// La sección "actual" es la más cercana al tope que sigue visible.
-			const visible = entries
-				.filter((e) => e.isIntersecting)
-				.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-			if (visible[0]) setCurrent(visible[0].target.id);
-		},
-		{ rootMargin: "-20% 0px -60% 0px" },
-	);
-	for (const section of sections) observer.observe(section);
 
 	const updatePct = () => {
 		const scrollable = document.body.scrollHeight - window.innerHeight;

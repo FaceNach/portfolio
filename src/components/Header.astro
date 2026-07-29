@@ -1,0 +1,67 @@
+---
+import t from "../i18n/dataEs";
+import { SECTIONS } from "../data/sections";
+---
+
+<header
+	class="fixed inset-x-0 top-0 z-50 flex h-10 items-center gap-3 border-b border-amber/25 bg-panel/95 px-3 font-mono text-[11px] backdrop-blur-sm sm:gap-5 sm:px-4"
+>
+	<a
+		href="#top"
+		class="shrink-0 text-amber no-underline hover:text-amber-hi">IG.GUNST</a
+	>
+
+	<nav class="flex flex-1 items-center gap-3 overflow-x-auto sm:gap-5" aria-label="Secciones">
+		{
+			SECTIONS.map((s) => (
+				<a
+					href={`#${s.id}`}
+					data-nav-link={s.id}
+					class="shrink-0 text-faint no-underline transition-colors hover:text-bone aria-[current=true]:text-amber-hi"
+				>
+					{s.label}
+				</a>
+			))
+		}
+	</nav>
+
+	<span class="shrink-0 text-faint">{t.localeLabel}</span>
+</header>
+
+<script>
+	const links = document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]");
+	const sections = [...links]
+		.map((l) => document.getElementById(l.dataset.navLink!))
+		.filter((el): el is HTMLElement => el !== null);
+
+	const statusLabel = document.getElementById("status-section");
+
+	const setCurrent = (id: string | null) => {
+		for (const link of links) {
+			link.setAttribute("aria-current", String(link.dataset.navLink === id));
+		}
+		if (statusLabel) {
+			const label = [...links]
+				.find((l) => l.dataset.navLink === id)
+				?.textContent?.trim();
+			statusLabel.textContent = label ? `§ ${label}` : "";
+		}
+	};
+
+	const visible = new Set<Element>();
+
+	const observer = new IntersectionObserver(
+		(entries) => {
+			for (const e of entries) {
+				if (e.isIntersecting) visible.add(e.target);
+				else visible.delete(e.target);
+			}
+			const current = [...visible].sort(
+				(a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top,
+			)[0];
+			setCurrent(current?.id ?? null);
+		},
+		{ rootMargin: "-20% 0px -60% 0px" },
+	);
+	for (const section of sections) observer.observe(section);
+</script>

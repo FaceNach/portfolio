@@ -1,22 +1,13 @@
-/**
- * Todo el contenido del sitio vive acá.
- *
- * Cuando sumemos inglés, `en.ts` exporta un objeto del mismo tipo (`Dict`) y
- * TypeScript falla el build si falta una clave. Ningún componente lleva texto
- * hardcodeado, así que agregar un idioma no toca los componentes.
- */
+const MESES =["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+const hoy = new Date();
+const fecha = `${String(hoy.getDate()).padStart(2, "0")} ${MESES[hoy.getMonth()]} ${hoy.getFullYear()}`;
 
 export interface Project {
-	/** Carpeta de imágenes: src/imagenes/<slug>/ */
 	slug: string;
 	name: string;
-	/** Nombres exactos del registro en src/data/tech.ts */
 	tech: string[];
-	/** Hasta 3 archivos dentro de src/imagenes/<slug>/. Vacío = placeholder. */
 	images: string[];
-	/** Qué es y qué resolvía. Dos o tres frases. */
 	detail: string;
-	/** Lo más interesante que tuviste que resolver. Es lo que se lee de verdad. */
 	note: string;
 	url: string | null;
 	repo: string | null;
@@ -42,7 +33,7 @@ const es = {
 
 	hero: {
 		host: "sistema:ignacio-gunst",
-		lastSession: "última sesión: 28 jul 2026",
+		lastSession: `última sesión: ${fecha}`,
 		nameFirst: "IGNACIO",
 		nameLast: "GUNST",
 		role: "backend · integración de sistemas · automatización de procesos",

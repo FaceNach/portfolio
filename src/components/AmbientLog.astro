@@ -1,14 +1,4 @@
 ---
-/**
- * PLACEHOLDER — fondo animado del hero.
- *
- * Log de jobs en deriva lenta, generado en código: cero assets, pesa unos KB y
- * se apaga solo con prefers-reduced-motion. Es el stand-in del video/GIF: para
- * reemplazarlo, cambiá este componente por el <video> y mantené el mismo
- * contenedor (absolute inset-0, aria-hidden, detrás del contenido del hero).
- */
-
-// LCG con semilla fija: mismo log en cada build, sin dependencias.
 let seed = 20260728;
 const rnd = () => ((seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648);
 const pick = <T,>(xs: readonly T[]) => xs[Math.floor(rnd() * xs.length)]!;
