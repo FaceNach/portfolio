@@ -1,9 +1,12 @@
 import {
 	siAstro,
+	siBootstrap,
+	siBun,
 	siClaude,
 	siCss,
 	siDocker,
 	siDotnet,
+	siFfmpeg,
 	siGit,
 	siGithubactions,
 	siGithubcopilot,
@@ -15,16 +18,21 @@ import {
 	siMysql,
 	siN8n,
 	siNodedotjs,
+	siOllama,
 	siOpencode,
 	siPostgresql,
 	siRabbitmq,
 	siReact,
+	siReactrouter,
 	siRedis,
 	siSqlite,
 	siSupabase,
+	siTailwindcss,
 	siTypescript,
 	siUnity,
 	siUnrealengine,
+	siVite,
+	siZod,
 } from "simple-icons";
 
 export interface Tech {
@@ -58,19 +66,35 @@ export const TECH: Tech[] = [
 	{ name: "Git", icon: siGit },
 	{ name: "GitHub Actions", icon: siGithubactions },
 	{ name: "n8n", icon: siN8n },
+	{ name: "FFmpeg", icon: siFfmpeg },
 	{ name: "Copilot", icon: siGithubcopilot },
 	{ name: "Codex", icon: null },
 	{ name: "Claude Code", icon: siClaude },
 	{ name: "Kilo Code", icon: null },
 	{ name: "Opencode", icon: siOpencode },
 	{ name: "Aider", icon: null },
+	{ name: "Ollama", icon: siOllama },
 	{ name: "Unity", icon: siUnity },
 	{ name: "Unreal Engine", icon: siUnrealengine },
 	{ name: "Scrum", icon: null },
+	{ name: "Bun", icon: siBun },
+	{ name: "Zod", icon: siZod },
+	{ name: "Vite", icon: siVite },
+	{ name: "React Router", icon: siReactrouter },
+	{ name: "Tailwind", icon: siTailwindcss },
+	{ name: "Bootstrap", icon: siBootstrap },
+	{ name: "WebSocket", icon: null },
 ];
+
+export type TechWithIcon = Tech & { icon: { path: string } };
 
 export const techByName = new Map(TECH.map((item) => [item.name, item]));
 
-export const TECH_WITH_ICON = TECH.filter(
-	(item): item is Tech & { icon: { path: string } } => item.icon !== null,
-);
+export const iconsFor = (names: readonly string[]): TechWithIcon[] => [
+	...new Map(
+		names
+			.map((name) => techByName.get(name))
+			.filter((item): item is TechWithIcon => Boolean(item?.icon))
+			.map((item) => [item.name, item] as const),
+	).values(),
+];

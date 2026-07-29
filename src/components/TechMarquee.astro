@@ -1,5 +1,6 @@
 ---
-import { TECH_WITH_ICON } from "../data/tech";
+import { iconsFor } from "../data/tech";
+import t from "../i18n/dataEs";
 
 interface Props {
 	reverse?: boolean;
@@ -7,7 +8,9 @@ interface Props {
 
 const { reverse = false } = Astro.props;
 
-const track = [...TECH_WITH_ICON, ...TECH_WITH_ICON];
+const items = iconsFor(t.stack.groups.flatMap((group) => group.items));
+
+const track = [...items, ...items];
 ---
 
 <div

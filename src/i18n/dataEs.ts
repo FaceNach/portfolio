@@ -64,7 +64,16 @@ const es = {
 			},
 			{
 				name: "frontend",
-				items: ["TypeScript", "JavaScript", "React", "Astro", "HTML", "CSS"],
+				items: [
+					"TypeScript",
+					"JavaScript",
+					"React",
+					"Astro",
+					"HTML",
+					"CSS",
+					"Tailwind",
+					"Bootstrap",
+				],
 			},
 			{
 				name: "bases de datos",
@@ -85,7 +94,15 @@ const es = {
 			},
 			{
 				name: "ia",
-				items: ["Copilot", "Codex", "Claude Code", "Kilo Code", "Opencode", "Aider"],
+				items: [
+					"Ollama",
+					"Copilot",
+					"Codex",
+					"Claude Code",
+					"Kilo Code",
+					"Opencode",
+					"Aider",
+				],
 			},
 			{ name: "otras", items: ["Unity", "Unreal Engine", "Scrum"] },
 		],
@@ -119,34 +136,34 @@ const es = {
 
 	projectList: [
 		{
-			slug: "api-inventario",
-			name: "API de inventario",
-			tech: ["C#", ".NET", "PostgreSQL", "Docker"],
+			slug: "localteacher",
+			name: "Tutor de inglés local",
+			tech: ["Go", "Ollama", "whisper.cpp", "Piper", "FFmpeg"],
 			detail:
-				"[Placeholder] API REST para control de stock en tiempo real, con autenticación y roles por sucursal.",
-			note: "[Placeholder] Contá acá el problema difícil: la condición de carrera que resolviste, la decisión de modelado que cambió todo, el número que mejoró.",
+				"CLI para practicar inglés hablado con un tutor de IA. Escribís o hablás y te contesta por texto y en voz alta. Corre todo local, con Ollama, whisper.cpp y Piper. Nada sale de tu máquina.",
+			note: "El audio fue lo más pesado. Grabar, convertir a WAV de 16 kHz, transcribir, y recién ahí tenés texto para el modelo. Que instalara igual en Linux, macOS y Windows me llevó más que el tutor en sí.",
 			url: null,
-			repo: null,
+			repo: "https://github.com/FaceNach/LocalTeacher",
 		},
 		{
-			slug: "sistema-turnos",
-			name: "Sistema de turnos",
-			tech: ["Node.js", "TypeScript", "MySQL", "Docker"],
+			slug: "wsticket",
+			name: "Sistema de colas de tickets",
+			tech: ["Bun", "TypeScript", "WebSocket", "React", "Zod", "Tailwind"],
 			detail:
-				"[Placeholder] Gestión de turnos con notificaciones automáticas y agenda por profesional.",
-			note: "[Placeholder] Qué aprendiste manejando husos horarios, recordatorios y cancelaciones tardías.",
+				"Colas de tickets en tiempo real. Servidor WebSocket en Bun, frontend en React. Varias pantallas ven los mismos cambios al instante, sin refrescar.",
+			note: "Pasar de pedido y respuesta a un estado vivo que miran varias pantallas a la vez. Ahí aparecen cosas que con una API REST ni existen, tipo dos ventanas agarrando el mismo ticket.",
 			url: null,
-			repo: null,
+			repo: "https://github.com/FaceNach/wsTicket",
 		},
 		{
-			slug: "buscador-semantico",
-			name: "Buscador semántico",
-			tech: ["Go", "ChromaDB", "PostgreSQL"],
+			slug: "snippetsnippet",
+			name: "Gestor de snippets de texto",
+			tech: ["Go", "MySQL", "HTML", "CSS", "JavaScript"],
 			detail:
-				"[Placeholder] Búsqueda por similitud sobre documentos internos, con embeddings en base vectorial.",
-			note: "[Placeholder] Cómo mediste si los resultados eran buenos.",
+				"App web en Go para crear y administrar snippets de texto. Cuentas de usuario, sesiones en MySQL, validación del lado del servidor. Plantillas y estáticos embebidos, se despliega como un solo binario.",
+			note: "Armar a mano lo que un framework te regala. En Go no hay sesiones, ni cadena de middleware, ni validación de formularios, así que elegís cada pieza y la encajás vos.",
 			url: null,
-			repo: null,
+			repo: "https://github.com/FaceNach/SnippetSnippet",
 		},
 		{
 			slug: "gateway-pagos",

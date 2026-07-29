@@ -161,10 +161,37 @@ una vez.
 el set duplicado y cada celda usa `pr-10` en vez de `gap`. Si se cambia a `gap`,
 el desplazamiento deja de caer exacto y se ve el salto.
 
-**`src/data/tech.ts` — dos consumidores, dos reglas.** La cinta descarta las
-tecnologías sin logo (`TECH_WITH_ICON`); la barra de cada proyecto **no puede
-descartar nada** (`techByName`) porque omitir C# de un proyecto hecho en C#
-sería mentir sobre el stack — ahí cae a etiqueta de texto.
+**El `name` de un proyecto es un título descriptivo, no el nombre del repo.**
+Decidido el 29/07/2026 sobre `wsTicket`, que como título "no dice nada". La fila
+de un proyecto tiene que decirle a alguien que escanea qué es la cosa, y para eso
+"Sistema de colas de tickets" gana contra el nombre del repositorio.
+
+El nombre real no se pierde igual: `Projects.astro` lo saca del último segmento
+de `repo` y lo muestra como etiqueta chica al lado del título. Es derivado, no hay
+campo nuevo que mantener, y desaparece solo en los proyectos sin repo.
+
+**`src/data/tech.ts` es un catálogo de logos, NO la lista de tu stack.** Esto es
+lo más fácil de romper de todo el proyecto, así que leelo antes de tocarlo.
+
+Están separadas dos preguntas que antes estaban pegadas:
+
+- **¿Existe el logo de esta tecnología?** → `tech.ts`. Crece libre. Que algo esté
+  acá no afirma nada sobre Nach; hay entradas como Bun, Zod o Vite que existen
+  sólo para que la fila de un proyecto muestre el logo.
+- **¿Es parte del stack de Nach?** → `stack.groups` en `dataEs.ts`, curada a mano.
+
+**La cinta se deriva de `stack.groups`**, no del catálogo (`iconsFor(...)` en
+`TechMarquee.astro`). Antes salía de `TECH_WITH_ICON`, o sea que *tener logo*
+alcanzaba para aparecer en la cinta — y agregar un icono para un proyecto te lo
+metía en el stack sin querer. Ya pasó con FFmpeg.
+
+Consecuencia práctica: **para que algo aparezca en la cinta hay que agregarlo a
+`stack.groups`, no a `tech.ts`.** Al revés no funciona y es el error esperable.
+
+La barra de cada proyecto sigue sin descartar nada (`techByName`): omitir C# de un
+proyecto hecho en C# sería mentir sobre el stack, así que sin logo cae a texto.
+Por eso `WebSocket` está en el catálogo con `icon: null` — es un protocolo, nunca
+va a tener logo, y así queda declarado en vez de ser un nombre suelto.
 
 **Velocidad de las cintas:** `--animate-marquee` en `global.css`, hoy 60s.
 
