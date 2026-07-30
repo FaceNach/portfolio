@@ -84,6 +84,33 @@ Ya rechazó: "Quién opera esta máquina", "seguí bajando", "Ordenado por cuán
 uso, no por cuánto me gusta". El patrón es claro: **nada de copy ingenioso o
 personificado.** Plano y descriptivo.
 
+## Reglas del copy — leer antes de escribir cualquier texto del sitio
+
+Estas se ganaron a fuerza de rechazos. No son sugerencias.
+
+**Nada de dos puntos para enumerar.** "El corte tiene dos consecuencias: ..." le
+parece "recontra falopa". Le suena a documentación técnica, no a alguien
+hablando. Frases separadas por punto.
+
+**Voseo, suelto, casual.** Ya rechazó texto que era correcto pero acartonado.
+Arrancar por lo concreto y en primera persona, no por la abstracción.
+
+**Corto. Mucho más corto de lo que sale solo.** Los `detail` van en 25-35
+palabras y los `note` en 30-40. El primer borrador suele ser el triple. Dijo que
+los textos largos "suenan muy a IA" y que para el detalle está el repo.
+
+**El `name` de un proyecto también es corto.** Rechazó "Tienda web con panel de
+administración" por gigante. Descriptivo no quiere decir largo.
+
+**Dos cosas que delatan a la IA**, para revisar antes de mostrarle nada. Una,
+arrancar varios textos con la misma plantilla (tres `note` seguidos con "Lo que
+más X fue..."). Dos, la cláusula que explica su propia consecuencia ("sesiones en
+MySQL, que es lo que hace que nadie pierda la suya al reiniciar"). El lector
+técnico ya lo sabe.
+
+**Listarle el copy nuevo aparte** para que lo pueda vetar de a uno. Funciona
+mejor que defenderlo.
+
 ## Decisiones ya tomadas — no volver a abrirlas
 
 - **Sin React.** La interactividad se resuelve con `<script>` vanilla. No hay
@@ -205,6 +232,12 @@ La barra de cada proyecto sigue sin descartar nada (`techByName`): omitir C# de 
 proyecto hecho en C# sería mentir sobre el stack, así que sin logo cae a texto.
 Por eso `WebSocket` está en el catálogo con `icon: null` — es un protocolo, nunca
 va a tener logo, y así queda declarado en vez de ser un nombre suelto.
+
+Lo mismo con `SQL Server`, `ASP.NET Core` y `EF Core`. **No los busques en
+`simple-icons`, no están y no van a estar.** Microsoft pidió que saquen sus marcas
+del paquete, igual que LinkedIn. De esa familia el único con logo es `.NET`
+(`siDotnet`). Si alguna vez hacen falta dibujados, van a mano en `data/icons.ts`,
+como el sobre del mail y LinkedIn.
 
 **Velocidad de las cintas:** `--animate-marquee` en `global.css`, hoy 60s.
 

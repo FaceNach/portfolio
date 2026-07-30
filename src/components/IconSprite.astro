@@ -1,6 +1,17 @@
 ---
 import { iconsFor } from "../data/tech";
-import { ICON_GITHUB, ICON_LINKEDIN, ICON_MAIL, iconId } from "../data/icons";
+import {
+	ICON_DB,
+	ICON_DB_ID,
+	ICON_GITHUB,
+	ICON_LANG,
+	ICON_LANG_ID,
+	ICON_LIB,
+	ICON_LIB_ID,
+	ICON_LINKEDIN,
+	ICON_MAIL,
+	iconId,
+} from "../data/icons";
 import t from "../i18n/dataEs";
 
 const tech = iconsFor([
@@ -22,6 +33,15 @@ const tech = iconsFor([
 		))
 	}
 
+	<symbol id={ICON_LIB_ID} viewBox="0 0 24 24">
+		<path fill-rule="evenodd" d={ICON_LIB}></path>
+	</symbol>
+	<symbol id={ICON_LANG_ID} viewBox="0 0 24 24">
+		<path d={ICON_LANG}></path>
+	</symbol>
+	<symbol id={ICON_DB_ID} viewBox="0 0 24 24">
+		<path d={ICON_DB}></path>
+	</symbol>
 	<symbol id="icon-mail" viewBox="0 0 24 24">
 		<path fill-rule="evenodd" d={ICON_MAIL}></path>
 	</symbol>

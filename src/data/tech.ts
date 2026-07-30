@@ -1,9 +1,11 @@
+import { ICON_CSHARP, ICON_DB_ID, ICON_LANG_ID, ICON_LIB_ID, iconId } from "./icons";
 import {
 	siAstro,
 	siBootstrap,
 	siBun,
 	siClaude,
 	siCss,
+	siD3,
 	siDocker,
 	siDotnet,
 	siFfmpeg,
@@ -11,8 +13,11 @@ import {
 	siGithubactions,
 	siGithubcopilot,
 	siGo,
+	siGrafana,
 	siHtml5,
+	siJaeger,
 	siJavascript,
+	siJson,
 	siKubernetes,
 	siMongodb,
 	siMysql,
@@ -20,11 +25,15 @@ import {
 	siNodedotjs,
 	siOllama,
 	siOpencode,
+	siOpentelemetry,
 	siPostgresql,
+	siPrometheus,
 	siRabbitmq,
 	siReact,
 	siReactrouter,
 	siRedis,
+	siRss,
+	siShadcnui,
 	siSqlite,
 	siSupabase,
 	siTailwindcss,
@@ -38,10 +47,11 @@ import {
 export interface Tech {
 	name: string;
 	icon: { path: string } | null;
+	kind?: "lang" | "db";
 }
 
 export const TECH: Tech[] = [
-	{ name: "C#", icon: null },
+	{ name: "C#", icon: { path: ICON_CSHARP }, kind: "lang" },
 	{ name: ".NET", icon: siDotnet },
 	{ name: "Go", icon: siGo },
 	{ name: "Node.js", icon: siNodedotjs },
@@ -59,8 +69,8 @@ export const TECH: Tech[] = [
 	{ name: "MongoDB", icon: siMongodb },
 	{ name: "Redis", icon: siRedis },
 	{ name: "ChromaDB", icon: null },
-	{ name: "SQL", icon: null },
-	{ name: "NoSQL", icon: null },
+	{ name: "SQL", icon: null, kind: "lang" },
+	{ name: "NoSQL", icon: null, kind: "lang" },
 	{ name: "Docker", icon: siDocker },
 	{ name: "Kubernetes", icon: siKubernetes },
 	{ name: "Git", icon: siGit },
@@ -84,11 +94,37 @@ export const TECH: Tech[] = [
 	{ name: "Tailwind", icon: siTailwindcss },
 	{ name: "Bootstrap", icon: siBootstrap },
 	{ name: "WebSocket", icon: null },
+	{ name: "ASP.NET Core", icon: null },
+	{ name: "EF Core", icon: null },
+	{ name: "SQL Server", icon: null, kind: "db" },
+	{ name: "SignalR", icon: null },
+	{ name: "shadcn/ui", icon: siShadcnui },
+	{ name: "D3", icon: siD3 },
+	{ name: "JSON", icon: siJson },
+	{ name: "goquery", icon: null },
+	{ name: "RSS", icon: siRss },
+	{ name: "sqlc", icon: null },
+	{ name: "goose", icon: null },
+	{ name: "OpenTelemetry", icon: siOpentelemetry },
+	{ name: "Prometheus", icon: siPrometheus },
+	{ name: "Grafana", icon: siGrafana },
+	{ name: "Jaeger", icon: siJaeger },
 ];
 
 export type TechWithIcon = Tech & { icon: { path: string } };
 
 export const techByName = new Map(TECH.map((item) => [item.name, item]));
+
+const FALLBACK_ID: Record<NonNullable<Tech["kind"]>, string> = {
+	lang: ICON_LANG_ID,
+	db: ICON_DB_ID,
+};
+
+export const techMarkId = (name: string): string => {
+	const item = techByName.get(name);
+	if (item?.icon) return iconId(item.name);
+	return (item?.kind && FALLBACK_ID[item.kind]) || ICON_LIB_ID;
+};
 
 export const iconsFor = (names: readonly string[]): TechWithIcon[] => [
 	...new Map(

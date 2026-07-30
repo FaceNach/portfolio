@@ -13,7 +13,7 @@ const social = [
 	},
 ];
 
-const emailEncoded = Buffer.from(t.contact.email, "utf8").toString("base64");
+const emailEncoded = btoa(t.contact.email);
 
 const itemClass =
 	"group flex cursor-pointer items-center gap-2.5 text-amber transition-colors hover:text-amber-hi";
