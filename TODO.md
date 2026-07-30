@@ -196,6 +196,10 @@ Detalles que importan si lo tocás:
   prefijo un icono podría pisarle el anclaje a un proyecto.
 - El sprite solo incluye los iconos **usados** (`stack.groups` + el `tech` de cada
   proyecto). Agregar algo a `tech.ts` sin usarlo en ningún lado no pesa nada.
+- Eso vale también para los tres glifos genéricos (`icon-lib`, `icon-lang`,
+  `icon-db`). Se emiten solo si algún `tech` de proyecto los resuelve, así que hoy
+  `icon-lang` no está en el HTML porque ningún proyecto lista SQL ni NoSQL.
+  Vuelve solo el día que alguno los liste — no hay que acordarse de nada.
 - El `<svg>` del sprite va con `position:absolute;width:0;height:0;overflow:hidden`
   y no con `display:none`. Los dos andan para `<symbol>`, pero este es el patrón
   seguro de siempre.

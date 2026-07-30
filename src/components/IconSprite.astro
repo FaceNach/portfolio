@@ -1,5 +1,5 @@
 ---
-import { iconsFor } from "../data/tech";
+import { iconsFor, techMarkId } from "../data/tech";
 import {
 	ICON_DB,
 	ICON_DB_ID,
@@ -14,10 +14,20 @@ import {
 } from "../data/icons";
 import t from "../i18n/dataEs";
 
+const projectTech = t.projectList.flatMap((project) => project.tech);
+
 const tech = iconsFor([
 	...t.stack.groups.flatMap((group) => group.items),
-	...t.projectList.flatMap((project) => project.tech),
+	...projectTech,
 ]);
+
+const marks = new Set(projectTech.map(techMarkId));
+
+const generic = [
+	{ id: ICON_LIB_ID, path: ICON_LIB, evenodd: true },
+	{ id: ICON_LANG_ID, path: ICON_LANG, evenodd: false },
+	{ id: ICON_DB_ID, path: ICON_DB, evenodd: false },
+].filter((item) => marks.has(item.id));
 ---
 
 <svg
@@ -33,15 +43,14 @@ const tech = iconsFor([
 		))
 	}
 
-	<symbol id={ICON_LIB_ID} viewBox="0 0 24 24">
-		<path fill-rule="evenodd" d={ICON_LIB}></path>
-	</symbol>
-	<symbol id={ICON_LANG_ID} viewBox="0 0 24 24">
-		<path d={ICON_LANG}></path>
-	</symbol>
-	<symbol id={ICON_DB_ID} viewBox="0 0 24 24">
-		<path d={ICON_DB}></path>
-	</symbol>
+	{
+		generic.map((item) => (
+			<symbol id={item.id} viewBox="0 0 24 24">
+				<path fill-rule={item.evenodd ? "evenodd" : undefined} d={item.path} />
+			</symbol>
+		))
+	}
+
 	<symbol id="icon-mail" viewBox="0 0 24 24">
 		<path fill-rule="evenodd" d={ICON_MAIL}></path>
 	</symbol>
