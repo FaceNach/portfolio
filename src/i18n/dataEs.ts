@@ -1,6 +1,7 @@
-const MESES =["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
-const hoy = new Date();
-const fecha = `${String(hoy.getDate()).padStart(2, "0")} ${MESES[hoy.getMonth()]} ${hoy.getFullYear()}`;
+import { buildDate } from "./buildDate";
+
+const MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+const fecha = buildDate(MESES);
 
 export interface Project {
 	slug: string;
@@ -28,6 +29,8 @@ const es = {
 		projects: "PROYECTOS",
 		contact: "CONTACTO",
 		skipToContent: "Saltar al contenido",
+		sectionsLabel: "Secciones",
+		switchLanguage: "View in English",
 	},
 
 	hero: {

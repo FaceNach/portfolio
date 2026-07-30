@@ -43,30 +43,76 @@ es placeholder. Cada `note` salió de leer el código del repo, no del README �
 Ese es el estándar si se agrega otro: buscar en el código la parte con filo, no
 resumir la portada.
 
-Lo que sigue abierto es que **ninguno tiene `url`**. Los 14 van con `repo` y sin
-demo, así que la fila cierra con un solo link. Si alguno se despliega, cargar la
-URL ahí.
+**Ninguno tiene `url`, y es decisión tomada, no un pendiente.** Nach no publicó
+ninguno porque le parecen flojos para mostrar en vivo. El único que zafaría es
+LocalTeacher, y ese es una CLI, así que no hay nada que visitar. Los 14 van solo
+con `repo`. No volver a proponer deploys.
 
 `about.body` sigue siendo el párrafo del CV partido en dos. Funciona, pero es
-registro de CV, no voz propia.
+registro de CV, no voz propia, y ahora choca de frente con los `note` de abajo
+que sí son concretos. Es el texto más flojo que queda en la página.
 
-### 2. Inglés
+### 2. Inglés — hecho el 30/07/2026
 
-La estructura ya está lista. Falta:
+`/` en español y `/en/` en inglés, las dos estáticas. Cómo quedó armado:
 
-- `src/i18n/en.ts` exportando un objeto del mismo tipo `Dict` (si falta una
-  clave, falla el build).
-- Config de i18n de Astro: `defaultLocale: "es"`, `prefixDefaultLocale: false`
-  → `/` en español, `/en/` en inglés.
-- Toggle en la `StatusBar` — hoy hay un `ES` fijo esperando el lugar.
-- Detección de idioma del navegador. **Ojo con la trampa:** el sitio es
-  estático, así que la detección corre en el cliente y se ve el flash. La
-  versión que funciona es detectar una sola vez, guardar en `localStorage`, y
-  que el toggle manual siempre gane. Alternativa más suave: no redirigir nunca
-  y mostrar un aviso "View in English".
-- `hreflang` alternates y el `lang` correcto por página.
+- **`src/i18n/index.ts`** resuelve el diccionario por locale. Cada componente
+  hace `const t = dict(Astro.currentLocale)` en vez de importar `dataEs` directo.
+  Si agregás un componente con texto, seguí ese patrón o vas a hardcodear
+  español en la página inglesa sin enterarte.
+- **`buildDate.ts`** existe para que las dos versiones no dupliquen el armado de
+  la fecha. Cada diccionario le pasa su propio array de meses. Sigue valiendo lo
+  de no usar `toLocaleDateString()` (ver más abajo).
+- **El toggle está en el `Header`, no en la `StatusBar`.** El TODO viejo decía
+  StatusBar, pero contradice la decisión de que el status line no lleva links.
+  Va donde estaba el `ES` fijo, y muestra el idioma *al que vas*, no el actual.
+- **Los ids de sección siguen en español en las dos** (`#sobre`, `#proyectos`).
+  Son anclas internas, traducirlas duplicaba la lógica de scroll del `Header` a
+  cambio de nada visible.
+- **No hay detección de idioma del navegador, a propósito.** El sitio es
+  estático, así que la detección corre en el cliente y se ve el flash. Si algún
+  día se agrega, la versión que funciona es detectar una sola vez, guardar en
+  `localStorage` y que el toggle manual siempre gane.
+- **Los `hreflang` son relativos** porque no hay `site` configurado en
+  `astro.config.mjs`. Cuando haya dominio, conviene ponerlo y que pasen a
+  absolutos, que es lo que Google prefiere.
 
-### 3. Fondo del hero
+**La red de seguridad está puesta.** `npm run build` corre `astro check` antes de
+buildear, así que si a `dataEn.ts` le falta una clave que `dataEs.ts` tiene, el
+build **falla** con `ts(2741)` en vez de emitir `undefined` en la página.
+Verificado sacando `noLinks` a propósito. `npm run check` lo corre solo.
+
+El único hint que quedó es `document.execCommand` marcado como deprecado en
+`Contact.astro`. Es a propósito, es el respaldo de copiado (ver más abajo). No
+tocarlo.
+
+**El gestor de paquetes es pnpm.** Migrado el 30/07/2026. El lockfile del repo es
+`pnpm-lock.yaml` y `package-lock.json` se borró — los dos juntos confunden a
+cualquiera que llegue después.
+
+`pnpm-workspace.yaml` tiene `allowBuilds: esbuild: false`. **No es un problema
+sin resolver, es la decisión tomada.** pnpm bloquea los postinstall por defecto y
+el de esbuild no hace falta, el binario viene por `optionalDependencies`.
+Verificado: check y build pasan. Si no queda registrada esa decisión, cualquier
+`pnpm astro <cmd>` falla con `ERR_PNPM_IGNORED_BUILDS` aunque el proyecto esté
+sano — el chequeo de dependencias previo sale con error.
+
+**No mezclar con npm.** Si alguien corre `npm install` encima, se arma un
+`node_modules` plano y vuelve a aparecer `package-lock.json`. Para migrar de
+gestor hay que hacerlo en limpio, borrando `node_modules` y el lockfile viejo
+primero.
+
+**Consecuencia de pnpm que va a sorprender:** las dependencias fantasma dejan de
+funcionar. Un `require("esbuild")` desde la raíz del proyecto ahora falla con
+`MODULE_NOT_FOUND` porque esbuild es transitiva y no está en `package.json`. Con
+npm andaba por accidente. Si algo importa un paquete que no declaraste, hay que
+declararlo.
+
+### 3. Fondo del hero — se queda
+
+Nach dijo el 30/07/2026 que le gusta como está. **No reemplazarlo por un
+video/GIF** salvo que él lo pida. Lo de abajo queda como referencia por si algún
+día cambia de idea.
 
 `AmbientLog.astro` es un placeholder: log de jobs en deriva, generado con un LCG
 de semilla fija (mismo log en cada build, cero assets). Está esperando el

@@ -1,6 +1,8 @@
 ---
 import TechMarquee from "./TechMarquee.astro";
-import t from "../i18n/dataEs";
+import { dict } from "../i18n";
+
+const t = dict(Astro.currentLocale);
 ---
 
 <section

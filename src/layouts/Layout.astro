@@ -2,18 +2,21 @@
 import "../styles/global.css";
 import CrtOverlay from "../components/CrtOverlay.astro";
 import IconSprite from "../components/IconSprite.astro";
-import t from "../i18n/dataEs";
+import { DEFAULT_LOCALE, LOCALES, dict, localeHome, toLocale } from "../i18n";
 
 interface Props {
 	title?: string;
 	description?: string;
 }
 
+const locale = toLocale(Astro.currentLocale);
+const t = dict(locale);
+
 const { title = t.meta.title, description = t.meta.description } = Astro.props;
 ---
 
 <!doctype html>
-<html lang={t.locale}>
+<html lang={locale}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -24,7 +27,15 @@ const { title = t.meta.title, description = t.meta.description } = Astro.props;
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:type" content="website" />
+		<meta property="og:locale" content={locale} />
 		<title>{title}</title>
+
+		{
+			LOCALES.map((l) => (
+				<link rel="alternate" hreflang={l} href={localeHome(l)} />
+			))
+		}
+		<link rel="alternate" hreflang="x-default" href={localeHome(DEFAULT_LOCALE)} />
 
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
