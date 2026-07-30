@@ -226,6 +226,27 @@ default correcto: `.flex` y `[hidden]` tienen la misma especificidad, así que s
 esa regla un elemento con `class="flex" hidden` se sigue viendo. Ya causó un bug
 una vez.
 
+**`trimPath()` en `data/icons.ts` redondea los paths a 2 decimales.** Bajó la
+página de 39.8 a 32.7 KB gzip. Tiene **dos guardas que parecen paranoia y no lo
+son** — las dos salieron de romper 20 de 50 iconos y encontrarlo con un diff de
+píxeles:
+
+- **No toca números que al redondear quedarían enteros.** Si un número pierde el
+  punto decimal se fusiona con el vecino. En un path compacto `1.001.5` son dos
+  números; si `1.001` pasa a `1`, queda `1.5`, que es uno solo, y el trazo entero
+  se corre. Peor todavía, `-.004` redondea a `-0` y `String(-0)` en JavaScript da
+  `"0"`, que además se come el signo.
+- **No toca números que empiezan con cero seguido de otro dígito.** En el comando
+  de arco los flags se pegan al número siguiente sin separador. `a11.8 11.8 0
+  003.146` no tiene un número `003.146` — son el flag `large-arc` (`0`), el flag
+  `sweep` (`0`) y la coordenada `3.146`. Reemplazarlo borra los dos flags.
+
+Si tocás esa función, **re-verificá renderizando**. El método que funcionó fue
+sacar cada `<symbol>` del HTML antes y después, rasterizar los 50 con
+`rsvg-convert` y comparar con `magick compare -metric RMSE`. Antialiasing da
+menos de 0.05; un icono roto da más de 0.3. A ojo no se ve, el sprite entero
+parecía bien con la mitad de los iconos deformados.
+
 **Los iconos son un sprite. Nunca vuelvas a inlinear un `<path>` en un
 componente.** `IconSprite.astro` (en el `Layout`, arriba de todo el body) define
 cada logo una sola vez como `<symbol>`, y todo el resto los referencia con

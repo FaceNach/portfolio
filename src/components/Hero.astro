@@ -1,12 +1,13 @@
 ---
 import AmbientLog from "./AmbientLog.astro";
+import { SECTION } from "../data/sections";
 import { dict } from "../i18n";
 
 const t = dict(Astro.currentLocale);
 ---
 
 <section
-	id="top"
+	id={SECTION.top}
 	class="relative flex min-h-svh flex-col justify-center overflow-hidden px-5 pt-16 pb-16 sm:px-8 md:px-14"
 >
 	<AmbientLog />

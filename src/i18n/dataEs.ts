@@ -30,6 +30,7 @@ const es = {
 		contact: "CONTACTO",
 		skipToContent: "Saltar al contenido",
 		sectionsLabel: "Secciones",
+		languageLabel: "Idioma",
 		switchLanguage: "View in English",
 	},
 

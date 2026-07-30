@@ -1,18 +1,24 @@
 ---
-import { dict, localeHome, otherLocale } from "../i18n";
-import { sectionsFor } from "../data/sections";
+import { LOCALES, dict, localeHome, toLocale } from "../i18n";
+import { SECTION, sectionsFor } from "../data/sections";
 
-const t = dict(Astro.currentLocale);
+const locale = toLocale(Astro.currentLocale);
+const t = dict(locale);
 const sections = sectionsFor(t);
-const other = otherLocale(Astro.currentLocale);
-const otherLabel = dict(other).localeLabel;
+
+const languages = LOCALES.map((code) => ({
+	code,
+	label: dict(code).localeLabel,
+	href: localeHome(code),
+	current: code === locale,
+}));
 ---
 
 <header
 	class="fixed inset-x-0 top-0 z-50 flex h-10 items-center gap-3 border-b border-amber/25 bg-panel/95 px-3 font-mono text-[11px] backdrop-blur-sm sm:gap-5 sm:px-4"
 >
 	<a
-		href="#top"
+		href={`#${SECTION.top}`}
 		class="grid size-6 shrink-0 place-items-center rounded-[5px] border border-amber/40 bg-ink font-semibold tracking-[-0.02em] text-amber no-underline transition-colors hover:border-amber-hi hover:text-amber-hi"
 		>IG</a
 	>
@@ -34,13 +40,36 @@ const otherLabel = dict(other).localeLabel;
 		}
 	</nav>
 
-	<a
-		href={localeHome(other)}
-		hreflang={other}
-		aria-label={t.nav.switchLanguage}
-		class="shrink-0 text-faint no-underline transition-colors hover:text-amber-hi"
-		>{otherLabel}</a
+	<nav
+		class="flex shrink-0 items-center gap-1.5"
+		aria-label={t.nav.languageLabel}
 	>
+		{
+			languages.map((lang, i) => (
+				<>
+					{i > 0 && (
+						<span class="text-amber/30" aria-hidden="true">
+							/
+						</span>
+					)}
+					{lang.current ? (
+						<span class="text-amber-hi" aria-current="true">
+							{lang.label}
+						</span>
+					) : (
+						<a
+							href={lang.href}
+							hreflang={lang.code}
+							aria-label={t.nav.switchLanguage}
+							class="text-faint no-underline transition-colors hover:text-bone"
+						>
+							{lang.label}
+						</a>
+					)}
+				</>
+			))
+		}
+	</nav>
 </header>
 
 <script>

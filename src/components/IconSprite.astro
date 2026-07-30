@@ -11,6 +11,7 @@ import {
 	ICON_LINKEDIN,
 	ICON_MAIL,
 	iconId,
+	trimPath,
 } from "../data/icons";
 import { dict } from "../i18n";
 
@@ -40,7 +41,7 @@ const generic = [
 	{
 		tech.map((item) => (
 			<symbol id={iconId(item.name)} viewBox="0 0 24 24">
-				<path d={item.icon.path} />
+				<path d={trimPath(item.icon.path)} />
 			</symbol>
 		))
 	}
@@ -48,18 +49,18 @@ const generic = [
 	{
 		generic.map((item) => (
 			<symbol id={item.id} viewBox="0 0 24 24">
-				<path fill-rule={item.evenodd ? "evenodd" : undefined} d={item.path} />
+				<path fill-rule={item.evenodd ? "evenodd" : undefined} d={trimPath(item.path)} />
 			</symbol>
 		))
 	}
 
 	<symbol id="icon-mail" viewBox="0 0 24 24">
-		<path fill-rule="evenodd" d={ICON_MAIL}></path>
+		<path fill-rule="evenodd" d={trimPath(ICON_MAIL)}></path>
 	</symbol>
 	<symbol id="icon-github" viewBox="0 0 24 24">
-		<path d={ICON_GITHUB}></path>
+		<path d={trimPath(ICON_GITHUB)}></path>
 	</symbol>
 	<symbol id="icon-linkedin" viewBox="0 0 24 24">
-		<path d={ICON_LINKEDIN}></path>
+		<path d={trimPath(ICON_LINKEDIN)}></path>
 	</symbol>
 </svg>

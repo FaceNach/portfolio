@@ -1,12 +1,13 @@
 ---
 import TechMarquee from "./TechMarquee.astro";
+import { SECTION } from "../data/sections";
 import { dict } from "../i18n";
 
 const t = dict(Astro.currentLocale);
 ---
 
 <section
-	id="stack"
+	id={SECTION.stack}
 	class="scroll-mt-14 border-t border-amber/15 bg-panel px-5 py-14 sm:px-8 md:px-14 md:py-20"
 >
 	<div class="mx-auto max-w-[72rem]">

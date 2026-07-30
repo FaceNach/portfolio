@@ -1,7 +1,9 @@
 ---
 import "../styles/global.css";
+import { Font } from "astro:assets";
 import CrtOverlay from "../components/CrtOverlay.astro";
 import IconSprite from "../components/IconSprite.astro";
+import { SECTION } from "../data/sections";
 import { DEFAULT_LOCALE, LOCALES, dict, localeHome, toLocale } from "../i18n";
 
 interface Props {
@@ -37,16 +39,12 @@ const { title = t.meta.title, description = t.meta.description } = Astro.props;
 		}
 		<link rel="alternate" hreflang="x-default" href={localeHome(DEFAULT_LOCALE)} />
 
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500&display=swap"
-			rel="stylesheet"
-		/>
+		<Font cssVariable="--font-ibm-plex-mono" preload />
+		<Font cssVariable="--font-ibm-plex-sans" preload />
 	</head>
 	<body class="pb-8">
 		<a
-			href="#sobre"
+			href={`#${SECTION.about}`}
 			class="sr-only font-mono text-xs focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-60 focus:bg-panel focus:px-3 focus:py-2 focus:text-amber"
 			>{t.nav.skipToContent}</a
 		>

@@ -1,9 +1,17 @@
 import type { Dict } from "../i18n/dataEs";
 
+export const SECTION = {
+	top: "top",
+	about: "sobre",
+	stack: "stack",
+	projects: "proyectos",
+	contact: "contacto",
+} as const;
+
 export const sectionsFor = (t: Dict) =>
 	[
-		{ id: "sobre", label: t.nav.about },
-		{ id: "stack", label: t.nav.stack },
-		{ id: "proyectos", label: t.nav.projects },
-		{ id: "contacto", label: t.nav.contact },
+		{ id: SECTION.about, label: t.nav.about },
+		{ id: SECTION.stack, label: t.nav.stack },
+		{ id: SECTION.projects, label: t.nav.projects },
+		{ id: SECTION.contact, label: t.nav.contact },
 	] as const;

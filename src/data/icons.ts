@@ -3,6 +3,18 @@ import { siGithub } from "simple-icons";
 export const iconId = (name: string) =>
 	`icon-${name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
 
+const PATH_DECIMALS = 2;
+
+export const trimPath = (d: string) =>
+	d.replace(/-?(?:\d+\.\d+|\.\d+)/g, (n) => {
+		if (/^-?0\d/.test(n)) return n;
+		const factor = 10 ** PATH_DECIMALS;
+		const rounded = Math.round(parseFloat(n) * factor) / factor;
+		if (Number.isInteger(rounded)) return n;
+		const short = String(rounded).replace(/^(-?)0\./, "$1.");
+		return short.length < n.length ? short : n;
+	});
+
 export const ICON_GITHUB = siGithub.path;
 
 export const ICON_LINKEDIN =

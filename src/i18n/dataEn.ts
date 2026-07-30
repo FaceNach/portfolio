@@ -21,6 +21,7 @@ const en: Dict = {
 		contact: "CONTACT",
 		skipToContent: "Skip to content",
 		sectionsLabel: "Sections",
+		languageLabel: "Language",
 		switchLanguage: "Ver en español",
 	},
 

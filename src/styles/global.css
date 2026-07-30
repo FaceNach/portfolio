@@ -10,8 +10,8 @@
 	--color-muted: #9197a9;
 	--color-faint: #60616d;
 
-	--font-mono: "IBM Plex Mono", ui-monospace, monospace;
-	--font-sans: "IBM Plex Sans", system-ui, sans-serif;
+	--font-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
+	--font-sans: var(--font-ibm-plex-sans), system-ui, sans-serif;
 
 	--animate-drift: drift 120s linear infinite;
 	--animate-flicker: flicker 7s ease-in-out infinite;
