@@ -36,10 +36,16 @@ Ningún componente lleva texto hardcodeado: todo sale de `dataEs.ts`.
 
 ### 1. Contenido real
 
-Los 10 proyectos de `projectList` son inventados. El campo que más va a mover la
-aguja es **`note` ("lo interesante")** de cada uno: el problema difícil, la
-decisión de modelado que cambió todo, el número que mejoró. Eso vale más que
-cualquier ajuste de tipografía.
+**Hecho el 30/07/2026.** Los 14 proyectos de `projectList` son reales y ninguno
+es placeholder. Cada `note` salió de leer el código del repo, no del README —
+`addPageVisit` bajo un mismo mutex en el crawler, el `NULLS FIRST` de gator, el
+`spyResponseWriter` de linko, el `{ stream: true }` del `TextDecoder` en AIJob.
+Ese es el estándar si se agrega otro: buscar en el código la parte con filo, no
+resumir la portada.
+
+Lo que sigue abierto es que **ninguno tiene `url`**. Los 14 van con `repo` y sin
+demo, así que la fila cierra con un solo link. Si alguno se despliega, cargar la
+URL ahí.
 
 `about.body` sigue siendo el párrafo del CV partido en dos. Funciona, pero es
 registro de CV, no voz propia.
