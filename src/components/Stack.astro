@@ -8,7 +8,7 @@ const t = dict(Astro.currentLocale);
 
 <section
 	id={SECTION.stack}
-	class="scroll-mt-14 border-t border-amber/15 bg-panel px-5 py-14 sm:px-8 md:px-14 md:py-20"
+	class="scroll-mt-14 border-t border-amber/25 bg-panel px-5 py-14 sm:px-8 md:px-14 md:py-20"
 >
 	<div class="mx-auto max-w-[72rem]">
 		<p class="font-mono text-xs tracking-[0.14em] text-amber">
@@ -23,10 +23,10 @@ const t = dict(Astro.currentLocale);
 			<TechMarquee />
 		</div>
 
-		<dl class="mt-8 border-t border-amber/15">
+		<dl class="mt-8 border-t border-amber/25">
 			{
 				t.stack.groups.map((group) => (
-					<div class="grid gap-2 border-b border-amber/15 py-5 sm:grid-cols-[14ch_minmax(0,1fr)] sm:gap-6">
+					<div class="grid gap-2 border-b border-amber/25 py-5 sm:grid-cols-[14ch_minmax(0,1fr)] sm:gap-6">
 						<dt class="font-mono text-xs text-faint sm:pt-1">{group.name}</dt>
 						<dd class="flex flex-wrap gap-x-6 gap-y-2">
 							{group.items.map((item) => (

@@ -9,7 +9,7 @@ const t = dict(Astro.currentLocale);
 
 <section
 	id={SECTION.projects}
-	class="scroll-mt-14 border-t border-amber/15 px-5 py-14 sm:px-8 md:px-14 md:py-20"
+	class="scroll-mt-14 border-t border-amber/25 px-5 py-14 sm:px-8 md:px-14 md:py-20"
 >
 	<div class="mx-auto max-w-[72rem]">
 		<p class="font-mono text-xs tracking-[0.14em] text-amber">
@@ -21,17 +21,17 @@ const t = dict(Astro.currentLocale);
 			{t.projects.heading}
 		</h2>
 
-		<ul class="mt-10 border-t border-amber/15">
+		<ul class="mt-10 border-t border-amber/25">
 			{
 				t.projectList.map((project) => (
-					<li class="border-b border-amber/15">
+					<li class="border-b border-amber/25">
 						<details
 							id={project.slug}
-							class="group scroll-mt-14 open:bg-amber/[0.03]"
+							class="disclosure group scroll-mt-14 transition-colors duration-[var(--disclosure-ms)] open:bg-amber/[0.06]"
 						>
-							<summary class="flex cursor-pointer list-none flex-wrap items-center gap-x-4 gap-y-2 px-2 py-4 transition-colors hover:bg-amber/5 [&::-webkit-details-marker]:hidden">
+							<summary class="flex cursor-pointer list-none flex-wrap items-center gap-x-4 gap-y-2 px-2 py-4 transition-colors hover:bg-amber/10 [&::-webkit-details-marker]:hidden">
 								<span
-									class="font-mono text-xs text-amber transition-transform group-open:rotate-90"
+									class="font-mono text-xs text-amber transition-[transform,color] duration-[var(--disclosure-ms)] ease-[cubic-bezier(0.2,0.6,0.2,1)] group-hover:text-amber-hi group-open:rotate-90"
 									aria-hidden="true"
 								>
 									▸
@@ -86,7 +86,7 @@ const t = dict(Astro.currentLocale);
 											href={project.url}
 											target="_blank"
 											rel="noopener noreferrer"
-											class="text-amber underline-offset-4 hover:text-amber-hi hover:underline"
+											class="-my-2 py-2 text-amber underline-offset-4 hover:text-amber-hi hover:underline"
 										>
 											{t.projects.visit} →
 										</a>
@@ -96,7 +96,7 @@ const t = dict(Astro.currentLocale);
 											href={project.repo}
 											target="_blank"
 											rel="noopener noreferrer"
-											class="text-amber underline-offset-4 hover:text-amber-hi hover:underline"
+											class="-my-2 py-2 text-amber underline-offset-4 hover:text-amber-hi hover:underline"
 										>
 											{t.projects.source} →
 										</a>

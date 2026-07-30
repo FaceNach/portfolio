@@ -43,6 +43,7 @@ const en: Dict = {
 			"I also have hands-on experience with AI projects, vector databases and modern AI-assisted development tools.",
 		],
 		facts: [
+			{ key: "experience", value: "2 years" },
 			{ key: "location", value: "Argentina" },
 			{ key: "education", value: "Systems Analyst" },
 			{ key: "focus", value: "backend · integration · automation" },
@@ -72,16 +73,7 @@ const en: Dict = {
 			},
 			{
 				name: "databases",
-				items: [
-					"PostgreSQL",
-					"MySQL",
-					"SQLite",
-					"MongoDB",
-					"Redis",
-					"ChromaDB",
-					"SQL",
-					"NoSQL",
-				],
+				items: ["PostgreSQL", "MySQL", "SQLite", "MongoDB", "Redis", "ChromaDB"],
 			},
 			{
 				name: "tools",
@@ -89,17 +81,9 @@ const en: Dict = {
 			},
 			{
 				name: "ai",
-				items: [
-					"Ollama",
-					"Copilot",
-					"Codex",
-					"Claude Code",
-					"Kilo Code",
-					"Opencode",
-					"Aider",
-				],
+				items: ["Ollama", "Claude Code", "Copilot"],
 			},
-			{ name: "other", items: ["Unity", "Unreal Engine", "Scrum"] },
+			{ name: "other", items: ["Unity", "Unreal Engine"] },
 		],
 	},
 

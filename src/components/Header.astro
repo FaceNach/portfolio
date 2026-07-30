@@ -19,12 +19,12 @@ const languages = LOCALES.map((code) => ({
 >
 	<a
 		href={`#${SECTION.top}`}
-		class="grid size-6 shrink-0 place-items-center rounded-[5px] border border-amber/40 bg-ink font-semibold tracking-[-0.02em] text-amber no-underline transition-colors hover:border-amber-hi hover:text-amber-hi"
+		class="relative grid size-6 shrink-0 place-items-center rounded-[5px] border border-amber/40 bg-ink font-semibold tracking-[-0.02em] text-amber no-underline transition-colors before:absolute before:-inset-2 before:content-[''] hover:border-amber-hi hover:text-amber-hi"
 		>IG</a
 	>
 
 	<nav
-		class="flex flex-1 items-center gap-3 overflow-x-auto sm:gap-5"
+		class="flex flex-1 items-center gap-3 self-stretch overflow-x-auto sm:gap-5"
 		aria-label={t.nav.sectionsLabel}
 	>
 		{
@@ -32,7 +32,7 @@ const languages = LOCALES.map((code) => ({
 				<a
 					href={`#${s.id}`}
 					data-nav-link={s.id}
-					class="shrink-0 text-faint no-underline transition-colors hover:text-bone aria-[current=true]:text-amber-hi"
+					class="flex shrink-0 items-center self-stretch text-faint no-underline transition-colors hover:text-bone aria-[current=true]:text-amber-hi"
 				>
 					{s.label}
 				</a>
@@ -41,7 +41,7 @@ const languages = LOCALES.map((code) => ({
 	</nav>
 
 	<nav
-		class="flex shrink-0 items-center gap-1.5"
+		class="flex shrink-0 items-center gap-1.5 self-stretch"
 		aria-label={t.nav.languageLabel}
 	>
 		{
@@ -53,7 +53,10 @@ const languages = LOCALES.map((code) => ({
 						</span>
 					)}
 					{lang.current ? (
-						<span class="text-amber-hi" aria-current="true">
+						<span
+							class="flex items-center self-stretch text-amber-hi"
+							aria-current="true"
+						>
 							{lang.label}
 						</span>
 					) : (
@@ -61,7 +64,7 @@ const languages = LOCALES.map((code) => ({
 							href={lang.href}
 							hreflang={lang.code}
 							aria-label={t.nav.switchLanguage}
-							class="text-faint no-underline transition-colors hover:text-bone"
+							class="flex items-center self-stretch px-1 text-faint no-underline transition-colors hover:text-bone"
 						>
 							{lang.label}
 						</a>
@@ -92,7 +95,12 @@ const languages = LOCALES.map((code) => ({
 		}
 	};
 
-	const TRIGGER = 96;
+	const restPoint = () =>
+		sections[0]
+			? parseFloat(getComputedStyle(sections[0]).scrollMarginTop) || 56
+			: 56;
+
+	let trigger = restPoint() + 2;
 
 	const activeId = () => {
 		const doc = document.documentElement;
@@ -102,7 +110,7 @@ const languages = LOCALES.map((code) => ({
 
 		let current: string | null = null;
 		for (const section of sections) {
-			if (section.getBoundingClientRect().top <= TRIGGER) current = section.id;
+			if (section.getBoundingClientRect().top <= trigger) current = section.id;
 		}
 		return current;
 	};
@@ -119,5 +127,8 @@ const languages = LOCALES.map((code) => ({
 
 	update();
 	window.addEventListener("scroll", update, { passive: true });
-	window.addEventListener("resize", update);
+	window.addEventListener("resize", () => {
+		trigger = restPoint() + 2;
+		update();
+	});
 </script>

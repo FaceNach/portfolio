@@ -8,10 +8,12 @@
 	--color-amber-hi: #f4dd97;
 	--color-bone: #f4f1ea;
 	--color-muted: #9197a9;
-	--color-faint: #60616d;
+	--color-faint: #83848f;
 
 	--font-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
 	--font-sans: var(--font-ibm-plex-sans), system-ui, sans-serif;
+
+	--disclosure-ms: 260ms;
 
 	--animate-drift: drift 120s linear infinite;
 	--animate-flicker: flicker 7s ease-in-out infinite;
@@ -76,6 +78,7 @@
 @layer base {
 	html {
 		scroll-behavior: smooth;
+		interpolate-size: allow-keywords;
 	}
 
 	body {
@@ -121,6 +124,20 @@
 	animation-delay: var(--d, 0ms);
 }
 
+@utility disclosure {
+	&::details-content {
+		block-size: 0;
+		overflow: clip;
+		transition:
+			block-size var(--disclosure-ms) cubic-bezier(0.2, 0.6, 0.2, 1),
+			content-visibility var(--disclosure-ms) allow-discrete;
+	}
+
+	&[open]::details-content {
+		block-size: auto;
+	}
+}
+
 @media (prefers-reduced-motion: reduce) {
 	html {
 		scroll-behavior: auto;
@@ -128,7 +145,8 @@
 
 	*,
 	*::before,
-	*::after {
+	*::after,
+	::details-content {
 		animation-duration: 0.01ms !important;
 		animation-iteration-count: 1 !important;
 		transition-duration: 0.01ms !important;

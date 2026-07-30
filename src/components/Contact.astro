@@ -19,14 +19,14 @@ const social = [
 const emailEncoded = btoa(t.contact.email);
 
 const itemClass =
-	"group flex cursor-pointer items-center gap-2.5 text-amber transition-colors hover:text-amber-hi";
+	"group -my-2 flex cursor-pointer items-center gap-2.5 py-2 text-amber transition-colors hover:text-amber-hi";
 const iconClass = "size-4 shrink-0 fill-current";
 const labelClass = "underline-offset-4 group-hover:underline";
 ---
 
 <section
 	id={SECTION.contact}
-	class="scroll-mt-14 border-t border-amber/15 bg-panel px-5 py-14 sm:px-8 md:px-14 md:py-20"
+	class="scroll-mt-14 border-t border-amber/25 bg-panel px-5 py-14 sm:px-8 md:px-14 md:py-20"
 >
 	<div class="mx-auto max-w-[72rem]">
 		<p class="font-mono text-xs tracking-[0.14em] text-amber">
@@ -75,12 +75,12 @@ const labelClass = "underline-offset-4 group-hover:underline";
 				id="copy-toast"
 				role="status"
 				aria-live="polite"
-				class="pointer-events-none absolute -top-9 left-0 border border-amber/40 bg-cell px-2.5 py-1 text-[11px] text-amber-hi opacity-0 transition-opacity duration-200"
+				class="pointer-events-none absolute bottom-full left-0 mb-2 border border-amber/40 bg-cell px-2.5 py-1 text-[11px] text-amber-hi opacity-0 transition-opacity duration-200"
 			></span>
 		</div>
 
 		<div
-			class="mt-12 flex flex-wrap items-center justify-between gap-2 border-t border-amber/15 pt-5 font-mono text-[11px] text-faint"
+			class="mt-12 flex flex-wrap items-center justify-between gap-2 border-t border-amber/25 pt-5 font-mono text-[11px] text-faint"
 		>
 			<span>© {year} Ignacio Gunst</span>
 			<span>{t.contact.footer}</span>
@@ -95,11 +95,11 @@ const labelClass = "underline-offset-4 group-hover:underline";
 	if (button && toast) {
 		let timer: ReturnType<typeof setTimeout>;
 
-		const flash = (message: string) => {
+		const flash = (message: string, ms = 3500) => {
 			toast.textContent = message;
 			toast.classList.remove("opacity-0");
 			clearTimeout(timer);
-			timer = setTimeout(() => toast.classList.add("opacity-0"), 2000);
+			timer = setTimeout(() => toast.classList.add("opacity-0"), ms);
 		};
 
 		const legacyCopy = (text: string) => {
@@ -124,7 +124,8 @@ const labelClass = "underline-offset-4 group-hover:underline";
 				await navigator.clipboard.writeText(email);
 				flash(copied);
 			} catch {
-				flash(legacyCopy(email) ? copied : `${failed} — ${email}`);
+				if (legacyCopy(email)) flash(copied);
+				else flash(`${failed} — ${email}`, 15000);
 			}
 		});
 	}

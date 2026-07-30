@@ -52,6 +52,7 @@ const es = {
 			"También tengo experiencia práctica en proyectos con IA, bases de datos vectoriales y herramientas modernas de desarrollo asistido por IA.",
 		],
 		facts: [
+			{ key: "experiencia", value: "2 años" },
 			{ key: "ubicación", value: "Argentina" },
 			{ key: "formación", value: "Analista de Sistemas" },
 			{ key: "foco", value: "backend · integración · automatización" },
@@ -81,16 +82,7 @@ const es = {
 			},
 			{
 				name: "bases de datos",
-				items: [
-					"PostgreSQL",
-					"MySQL",
-					"SQLite",
-					"MongoDB",
-					"Redis",
-					"ChromaDB",
-					"SQL",
-					"NoSQL",
-				],
+				items: ["PostgreSQL", "MySQL", "SQLite", "MongoDB", "Redis", "ChromaDB"],
 			},
 			{
 				name: "herramientas",
@@ -98,17 +90,9 @@ const es = {
 			},
 			{
 				name: "ia",
-				items: [
-					"Ollama",
-					"Copilot",
-					"Codex",
-					"Claude Code",
-					"Kilo Code",
-					"Opencode",
-					"Aider",
-				],
+				items: ["Ollama", "Claude Code", "Copilot"],
 			},
-			{ name: "otras", items: ["Unity", "Unreal Engine", "Scrum"] },
+			{ name: "otras", items: ["Unity", "Unreal Engine"] },
 		],
 	},
 
