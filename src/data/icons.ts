@@ -1,5 +1,8 @@
 import { siGithub } from "simple-icons";
 
+export const iconId = (name: string) =>
+	`icon-${name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
+
 export const ICON_GITHUB = siGithub.path;
 
 export const ICON_LINKEDIN =

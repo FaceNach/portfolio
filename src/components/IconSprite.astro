@@ -1,0 +1,34 @@
+---
+import { iconsFor } from "../data/tech";
+import { ICON_GITHUB, ICON_LINKEDIN, ICON_MAIL, iconId } from "../data/icons";
+import t from "../i18n/dataEs";
+
+const tech = iconsFor([
+	...t.stack.groups.flatMap((group) => group.items),
+	...t.projectList.flatMap((project) => project.tech),
+]);
+---
+
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	aria-hidden="true"
+	style="position:absolute;width:0;height:0;overflow:hidden"
+>
+	{
+		tech.map((item) => (
+			<symbol id={iconId(item.name)} viewBox="0 0 24 24">
+				<path d={item.icon.path} />
+			</symbol>
+		))
+	}
+
+	<symbol id="icon-mail" viewBox="0 0 24 24">
+		<path fill-rule="evenodd" d={ICON_MAIL}></path>
+	</symbol>
+	<symbol id="icon-github" viewBox="0 0 24 24">
+		<path d={ICON_GITHUB}></path>
+	</symbol>
+	<symbol id="icon-linkedin" viewBox="0 0 24 24">
+		<path d={ICON_LINKEDIN}></path>
+	</symbol>
+</svg>

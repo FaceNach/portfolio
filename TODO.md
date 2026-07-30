@@ -1,6 +1,7 @@
 # TODO
 
-Estado del portfolio y qué sigue. Escrito al cierre de la sesión del 28/07/2026.
+Estado del portfolio y qué sigue. Actualizado al cierre de la sesión del
+29/07/2026.
 
 ## Dónde está el proyecto
 
@@ -9,22 +10,24 @@ Sitio en Astro + Tailwind v4, una sola página, estático. Estética de terminal
 
 ```
 src/
-  styles/global.css     paleta en @theme, utilidades phosphor/rise/caret/scroll-amber
+  styles/global.css     paleta en @theme, utilidades phosphor/rise/caret
   i18n/dataEs.ts        TODO el contenido del sitio, tipado como `Dict`
-  data/tech.ts          registro único de tecnologías + logos
+  data/tech.ts          catálogo de logos (NO es la lista del stack, ver abajo)
+  data/icons.ts         paths dibujados a mano + el generador de ids del sprite
   data/sections.ts      registro único de secciones navegables (id + label)
   components/
-    Header.astro        nav fijo arriba + dueño del observer de sección actual
+    Header.astro        nav fijo arriba + dueño de la sección actual
     Hero.astro          banner de sesión, nombre, cursor
     AmbientLog.astro    fondo animado del hero (PLACEHOLDER)
     CrtOverlay.astro    scanlines + viñeta + deriva de brillo
+    IconSprite.astro    los <symbol> de todos los iconos, una sola vez
+    Icon.astro          <svg><use href="#..."></svg>
     About.astro
     Stack.astro         lista + dos cintas de logos
     TechMarquee.astro   la cinta (prop `reverse` para la de abajo)
-    Projects.astro      filas <details>, la primera abierta
+    Projects.astro      una fila <details> por proyecto, todas cerradas
     Contact.astro
     StatusBar.astro     status line fijo abajo: sección actual + % (sin links)
-  imagenes/             OBSOLETA — quedó vacía, ver "sin capturas" abajo
 ```
 
 Ningún componente lleva texto hardcodeado: todo sale de `dataEs.ts`.
@@ -41,21 +44,7 @@ cualquier ajuste de tipografía.
 `about.body` sigue siendo el párrafo del CV partido en dos. Funciona, pero es
 registro de CV, no voz propia.
 
-### 2. Peso de la página
-
-`dist/index.html` pesa **78,6 KB gzippeados**, y el 77% son paths de SVG
-inlineados. Hay 135 `<path>` en la página: la cinta de tecnologías duplica el set
-para que el bucle cierre, y hay dos cintas, así que cada logo aparece 4 veces —
-más una vez por cada proyecto que usa esa tecnología.
-
-El arreglo es un sprite: definir cada icono una sola vez en un `<svg>` oculto con
-`<symbol id="...">` y referenciarlo con `<use href="#...">`. Pasaría de 135 paths
-a ~30. Estimado: 78 KB → ~25 KB.
-
-No está hecho. No es urgente para un sitio de una página, pero es la optimización
-con mejor relación esfuerzo/beneficio que queda.
-
-### 3. Inglés
+### 2. Inglés
 
 La estructura ya está lista. Falta:
 
@@ -71,7 +60,7 @@ La estructura ya está lista. Falta:
   y mostrar un aviso "View in English".
 - `hreflang` alternates y el `lang` correcto por página.
 
-### 4. Fondo del hero
+### 3. Fondo del hero
 
 `AmbientLog.astro` es un placeholder: log de jobs en deriva, generado con un LCG
 de semilla fija (mismo log en cada build, cero assets). Está esperando el
@@ -81,12 +70,12 @@ el contenedor (`absolute inset-0`, `aria-hidden`, detrás del contenido).
 Si aparece un GIF a pantalla completa: convertirlo a WebM primero, pesa ~10x
 menos y se puede pausar.
 
-### 5. Textos míos que Nach nunca aprobó
+### 4. Textos míos que Nach nunca aprobó
 
 Están todos en `dataEs.ts`. Si alguno chirría, se cambia ahí:
 
 - `hero.host` → `sistema:ignacio-gunst`
-- `hero.lastSession` → `última sesión: 28 jul 2026` (está hardcodeada)
+- `hero.lastSession` → `última sesión: <fecha del build>`
 - `about.heading` → "Cómo trabajo"
 - `contact.heading` / `contact.body` → "Escribime" / "Si tenés un proyecto…"
 - `contact.footer` → "hecho con Astro · sin frameworks de más"
@@ -116,9 +105,10 @@ personificado.** Plano y descriptivo.
   Primero quedó un `<ol>` plano con todo desplegado, y **Nach lo rechazó por
   largo**: 10 proyectos × 250px = 2500px. La versión de ahora es una fila
   `<details>`/`<summary>` por proyecto — nombre y tecnologías siempre visibles,
-  el resto se despliega. Baja a ~765px. **La primera va abierta a propósito**
-  (`open={i === 0}`): si están todas cerradas no se ve qué hay adentro ni se
-  entiende que la fila se abre.
+  el resto se despliega. Baja a ~765px.
+
+  Estuvo un rato con la primera abierta por defecto para que se entendiera que las
+  filas se despliegan. **Nach lo sacó**, quiere todas cerradas al entrar.
 
   Es plegado nativo, sin librería. El único JS es abrir la fila que apunta el
   hash (ver abajo). Si tocás el `<summary>`, ojo con `list-none` +
@@ -156,6 +146,29 @@ personificado.** Plano y descriptivo.
 default correcto: `.flex` y `[hidden]` tienen la misma especificidad, así que sin
 esa regla un elemento con `class="flex" hidden` se sigue viendo. Ya causó un bug
 una vez.
+
+**Los iconos son un sprite. Nunca vuelvas a inlinear un `<path>` en un
+componente.** `IconSprite.astro` (en el `Layout`, arriba de todo el body) define
+cada logo una sola vez como `<symbol>`, y todo el resto los referencia con
+`<Icon id={iconId(nombre)} class="..." />`, que rinde `<svg><use href="#..."></svg>`.
+
+Antes cada logo iba inlineado en cada lugar donde aparecía. Como la cinta duplica
+el set y hay dos cintas, cada logo se repetía 4 veces, más una por proyecto que lo
+usara: **135 paths, 91,6 KB gzippeados**. Con el sprite son 35 paths y **28,8 KB**.
+
+Detalles que importan si lo tocás:
+
+- Los ids salen de `iconId()` en `data/icons.ts` y llevan prefijo `icon-`. El
+  prefijo no es decorativo — los `<details>` de proyectos usan `id={slug}`, y sin
+  prefijo un icono podría pisarle el anclaje a un proyecto.
+- El sprite solo incluye los iconos **usados** (`stack.groups` + el `tech` de cada
+  proyecto). Agregar algo a `tech.ts` sin usarlo en ningún lado no pesa nada.
+- El `<svg>` del sprite va con `position:absolute;width:0;height:0;overflow:hidden`
+  y no con `display:none`. Los dos andan para `<symbol>`, pero este es el patrón
+  seguro de siempre.
+- El color se hereda por `fill` en el `<svg>` de afuera (`fill-amber/70`,
+  `fill-current`). Los `<path>` adentro del `<symbol>` no llevan `fill` propio,
+  justamente para que herede. Si le ponés uno, deja de responder al hover.
 
 **`TechMarquee` — el `-50%`.** El bucle cierra sin salto porque la pista lleva
 el set duplicado y cada celda usa `pr-10` en vez de `gap`. Si se cambia a `gap`,

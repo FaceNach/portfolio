@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import CrtOverlay from "../components/CrtOverlay.astro";
+import IconSprite from "../components/IconSprite.astro";
 import t from "../i18n/dataEs";
 
 interface Props {
@@ -38,6 +39,7 @@ const { title = t.meta.title, description = t.meta.description } = Astro.props;
 			class="sr-only font-mono text-xs focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-60 focus:bg-panel focus:px-3 focus:py-2 focus:text-amber"
 			>{t.nav.skipToContent}</a
 		>
+		<IconSprite />
 		<CrtOverlay />
 		<slot />
 	</body>

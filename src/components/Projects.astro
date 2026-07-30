@@ -1,5 +1,7 @@
 ---
+import Icon from "./Icon.astro";
 import { techByName } from "../data/tech";
+import { iconId } from "../data/icons";
 import t from "../i18n/dataEs";
 ---
 
@@ -48,13 +50,10 @@ import t from "../i18n/dataEs";
 										return (
 											<span class="flex items-center gap-1.5">
 												{item?.icon && (
-													<svg
-														viewBox="0 0 24 24"
+													<Icon
+														id={iconId(item.name)}
 														class="size-3.5 shrink-0 fill-amber/70"
-														aria-hidden="true"
-													>
-														<path d={item.icon.path} />
-													</svg>
+													/>
 												)}
 												<span class="font-mono text-[11px] text-muted">
 													{name}

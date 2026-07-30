@@ -1,5 +1,7 @@
 ---
+import Icon from "./Icon.astro";
 import { iconsFor } from "../data/tech";
+import { iconId } from "../data/icons";
 import t from "../i18n/dataEs";
 
 interface Props {
@@ -26,9 +28,10 @@ const track = [...items, ...items];
 		{
 			track.map((item) => (
 				<div class="flex shrink-0 items-center gap-2.5 pr-10">
-					<svg viewBox="0 0 24 24" class="size-[18px] shrink-0 fill-amber/70">
-						<path d={item.icon.path} />
-					</svg>
+					<Icon
+						id={iconId(item.name)}
+						class="size-[18px] shrink-0 fill-amber/70"
+					/>
 					<span class="font-mono text-xs whitespace-nowrap text-muted">
 						{item.name}
 					</span>
