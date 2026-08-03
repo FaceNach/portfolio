@@ -45,6 +45,7 @@ const en: Dict = {
 		facts: [
 			{ key: "location", value: "Argentina" },
 			{ key: "education", value: "Systems Analyst" },
+			{ key: "languages", value: "native Spanish · professional English" },
 			{ key: "focus", value: "backend · integration · automation" },
 		],
 	},

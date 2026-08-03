@@ -54,6 +54,7 @@ const es = {
 		facts: [
 			{ key: "ubicación", value: "Argentina" },
 			{ key: "formación", value: "Analista de Sistemas" },
+			{ key: "idiomas", value: "español nativo · inglés profesional" },
 			{ key: "foco", value: "backend · integración · automatización" },
 		],
 	},

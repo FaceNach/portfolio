@@ -62,6 +62,7 @@ const languages = LOCALES.map((code) => ({
 					) : (
 						<a
 							href={lang.href}
+							data-locale-href={lang.href}
 							hreflang={lang.code}
 							aria-label={t.nav.switchLanguage}
 							class="flex items-center self-stretch px-1 text-faint no-underline transition-colors hover:text-bone"
@@ -82,10 +83,16 @@ const languages = LOCALES.map((code) => ({
 		.filter((el): el is HTMLElement => el !== null);
 
 	const statusLabel = document.getElementById("status-section");
+	const localeLinks =
+		document.querySelectorAll<HTMLAnchorElement>("[data-locale-href]");
 
 	const setCurrent = (id: string | null) => {
 		for (const link of links) {
 			link.setAttribute("aria-current", String(link.dataset.navLink === id));
+		}
+		for (const link of localeLinks) {
+			const base = link.dataset.localeHref!;
+			link.href = id ? `${base}#${id}` : base;
 		}
 		if (statusLabel) {
 			const label = [...links]
@@ -95,14 +102,28 @@ const languages = LOCALES.map((code) => ({
 		}
 	};
 
-	const restPoint = () =>
-		sections[0]
-			? parseFloat(getComputedStyle(sections[0]).scrollMarginTop) || 56
-			: 56;
+	const BAND = 0.4;
 
-	let trigger = restPoint() + 2;
+	const REST = sections[0]
+		? parseFloat(getComputedStyle(sections[0]).scrollMarginTop) || 56
+		: 56;
+
+	const triggerPoint = () => Math.max(REST + 2, window.innerHeight * BAND);
+
+	let trigger = triggerPoint();
+
+	const centerLandings = () => {
+		for (const section of sections) {
+			const free = window.innerHeight - section.offsetHeight;
+			section.style.scrollMarginTop = `${Math.max(REST, free / 2)}px`;
+		}
+	};
+
+	let pinned: string | null = null;
 
 	const activeId = () => {
+		if (pinned) return pinned;
+
 		const doc = document.documentElement;
 		if (window.scrollY + window.innerHeight >= doc.scrollHeight - 4) {
 			return sections[sections.length - 1]?.id ?? null;
@@ -125,10 +146,44 @@ const languages = LOCALES.map((code) => ({
 		});
 	};
 
+	const isSection = (id: string) => sections.some((s) => s.id === id);
+
+	const pin = (id: string) => {
+		pinned = id;
+		update();
+	};
+
+	const unpin = () => {
+		if (!pinned) return;
+		pinned = null;
+		update();
+	};
+
+	for (const link of links) {
+		link.addEventListener("click", () => pin(link.dataset.navLink!));
+	}
+
+	const pinFromHash = () => {
+		const id = decodeURIComponent(location.hash.slice(1));
+		if (isSection(id)) pin(id);
+		else unpin();
+	};
+
+	pinFromHash();
+	window.addEventListener("hashchange", pinFromHash);
+
+	for (const gesture of ["wheel", "touchmove", "keydown", "pointerdown"]) {
+		window.addEventListener(gesture, unpin, { passive: true });
+	}
+
+	centerLandings();
+	document.fonts?.ready.then(centerLandings);
+
 	update();
 	window.addEventListener("scroll", update, { passive: true });
 	window.addEventListener("resize", () => {
-		trigger = restPoint() + 2;
+		trigger = triggerPoint();
+		centerLandings();
 		update();
 	});
 </script>
