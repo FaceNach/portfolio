@@ -43,7 +43,6 @@ const en: Dict = {
 			"I also have hands-on experience with AI projects, vector databases and modern AI-assisted development tools.",
 		],
 		facts: [
-			{ key: "experience", value: "2 years" },
 			{ key: "location", value: "Argentina" },
 			{ key: "education", value: "Systems Analyst" },
 			{ key: "focus", value: "backend · integration · automation" },
@@ -81,7 +80,7 @@ const en: Dict = {
 			},
 			{
 				name: "ai",
-				items: ["Ollama", "Claude Code", "Copilot"],
+				items: ["Ollama", "Claude Code","Codex", "Copilot"],
 			},
 			{ name: "other", items: ["Unity", "Unreal Engine"] },
 		],
@@ -91,7 +90,7 @@ const en: Dict = {
 		label: "§ PROJECTS",
 		heading: "Projects",
 		detailLabel: "detail",
-		noteLabel: "what I learned",
+		noteLabel: "the hard part",
 		visit: "view live",
 		source: "code",
 		noLinks: "no public link",

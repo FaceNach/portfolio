@@ -52,7 +52,6 @@ const es = {
 			"También tengo experiencia práctica en proyectos con IA, bases de datos vectoriales y herramientas modernas de desarrollo asistido por IA.",
 		],
 		facts: [
-			{ key: "experiencia", value: "2 años" },
 			{ key: "ubicación", value: "Argentina" },
 			{ key: "formación", value: "Analista de Sistemas" },
 			{ key: "foco", value: "backend · integración · automatización" },
@@ -90,7 +89,7 @@ const es = {
 			},
 			{
 				name: "ia",
-				items: ["Ollama", "Claude Code", "Copilot"],
+				items: ["Ollama", "Claude Code", "Codex", "Copilot"],
 			},
 			{ name: "otras", items: ["Unity", "Unreal Engine"] },
 		],
