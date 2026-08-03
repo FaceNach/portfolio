@@ -33,6 +33,7 @@ Two decisions shaped most of the rest:
 | Icons | simple-icons, plus a few hand-drawn paths |
 | Fonts | IBM Plex Mono and IBM Plex Sans, self-hosted via Astro's font API |
 | Type checking | `@astrojs/check`, runs as part of the build |
+| Testing | Vitest: unit tests, data-integrity checks and a build smoke test |
 | Package manager | pnpm |
 
 ### Project structure
@@ -97,6 +98,8 @@ without the clipboard API.
 pnpm install
 pnpm dev        # dev server
 pnpm check      # type check on its own
+pnpm test       # unit and data-integrity tests
+pnpm test:build # build, then smoke-test the built output
 pnpm build      # type check, then build to dist/
 pnpm preview    # serve the built output
 ```
@@ -134,6 +137,7 @@ Dos decisiones marcaron el resto:
 | Iconos | simple-icons, más algunos paths dibujados a mano |
 | Fuentes | IBM Plex Mono e IBM Plex Sans, self-hosteadas con la API de Astro |
 | Chequeo de tipos | `@astrojs/check`, corre como parte del build |
+| Tests | Vitest: unitarios, de integridad de datos y un smoke test del build |
 | Gestor de paquetes | pnpm |
 
 ### Estructura
@@ -200,6 +204,8 @@ para navegadores sin la API de portapapeles.
 pnpm install
 pnpm dev        # servidor de desarrollo
 pnpm check      # solo el chequeo de tipos
+pnpm test       # tests unitarios y de integridad de datos
+pnpm test:build # buildea y prueba el resultado del build
 pnpm build      # chequea tipos y buildea a dist/
 pnpm preview    # sirve lo buildeado
 ```

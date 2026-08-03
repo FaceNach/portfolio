@@ -72,6 +72,8 @@ export const TECH: Tech[] = [
 	{ name: "MongoDB", icon: siMongodb },
 	{ name: "Redis", icon: siRedis },
 	{ name: "ChromaDB", icon: null },
+	{ name: "whisper.cpp", icon: null },
+	{ name: "Piper", icon: null },
 	{ name: "SQL", icon: null, kind: "lang" },
 	{ name: "NoSQL", icon: null, kind: "lang" },
 	{ name: "Docker", icon: siDocker },

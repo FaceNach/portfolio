@@ -39,8 +39,17 @@ const { title = t.meta.title, description = t.meta.description } = Astro.props;
 		}
 		<link rel="alternate" hreflang="x-default" href={localeHome(DEFAULT_LOCALE)} />
 
-		<Font cssVariable="--font-ibm-plex-mono" preload />
-		<Font cssVariable="--font-ibm-plex-sans" preload />
+		<Font
+			cssVariable="--font-ibm-plex-mono"
+			preload={[
+				{ weight: 400, subset: "latin" },
+				{ weight: 600, subset: "latin" },
+			]}
+		/>
+		<Font
+			cssVariable="--font-ibm-plex-sans"
+			preload={[{ weight: 400, subset: "latin" }]}
+		/>
 	</head>
 	<body class="pb-8">
 		<a
