@@ -9,9 +9,9 @@ const en: Dict = {
 	localeLabel: "EN",
 
 	meta: {
-		title: "Ignacio Gunst — Backend developer",
+		title: "Ignacio Gunst — Software developer",
 		description:
-			"Software developer focused on backend, systems integration and process automation.",
+			"Software developer. Backend and frontend, systems integration and process automation.",
 	},
 
 	nav: {
@@ -30,7 +30,7 @@ const en: Dict = {
 		lastSession: `last session: ${date}`,
 		nameFirst: "IGNACIO",
 		nameLast: "GUNST",
-		role: "backend · systems integration · process automation",
+		role: "backend & frontend · systems integration · process automation",
 		intro:
 			"I build backend services, REST APIs, integrations with external services and database-backed applications.",
 	},

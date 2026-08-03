@@ -18,9 +18,9 @@ const es = {
 	localeLabel: "ES",
 
 	meta: {
-		title: "Ignacio Gunst — Desarrollador backend",
+		title: "Ignacio Gunst — Desarrollador de software",
 		description:
-			"Desarrollador de software orientado a backend, integración de sistemas y automatización de procesos.",
+			"Desarrollador de software. Backend y frontend, integración de sistemas y automatización de procesos.",
 	},
 
 	nav: {
@@ -39,7 +39,7 @@ const es = {
 		lastSession: `última sesión: ${fecha}`,
 		nameFirst: "IGNACIO",
 		nameLast: "GUNST",
-		role: "backend · integración de sistemas · automatización de procesos",
+		role: "backend & frontend · integración de sistemas · automatización de procesos",
 		intro:
 			"Desarrollo servicios backend, APIs REST, integraciones con servicios externos y aplicaciones respaldadas por bases de datos.",
 	},
