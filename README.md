@@ -102,10 +102,26 @@ pnpm test       # unit and data-integrity tests
 pnpm test:build # build, then smoke-test the built output
 pnpm build      # type check, then build to dist/
 pnpm preview    # serve the built output
+pnpm deploy     # publish dist/ to Cloudflare
 ```
 
 Needs Node 22.12 or newer. The build produces plain static files, so any static
 host works.
+
+### Deploy
+
+The site runs on Cloudflare Workers as an assets-only Worker: `wrangler.jsonc`
+points at `dist/`, and no adapter is involved — the Cloudflare adapter is only
+needed for on-demand rendering.
+
+Cloudflare is connected to this repository, so deploys are automatic. A push to
+`main` builds and publishes to production; a push to any other branch uploads a
+preview version with its own URL. The build image needs `PNPM_VERSION` set to 11
+or newer, because `pnpm-workspace.yaml` uses pnpm 11 settings.
+
+`.github/workflows/test.yml` runs the type check and the tests on every push and
+pull request. It does not deploy anything and does not block the Cloudflare
+build — it only marks the commit.
 
 ---
 
@@ -208,7 +224,24 @@ pnpm test       # tests unitarios y de integridad de datos
 pnpm test:build # buildea y prueba el resultado del build
 pnpm build      # chequea tipos y buildea a dist/
 pnpm preview    # sirve lo buildeado
+pnpm deploy     # publica dist/ en Cloudflare
 ```
 
 Necesita Node 22.12 o superior. El build genera archivos estáticos comunes, así
 que sirve cualquier hosting estático.
+
+### Deploy
+
+El sitio corre en Cloudflare Workers como un Worker de solo assets:
+`wrangler.jsonc` apunta a `dist/` y no hay adapter de por medio — el adapter de
+Cloudflare hace falta solo para render on-demand.
+
+Cloudflare está conectado a este repositorio, así que los deploys son
+automáticos. Un push a `main` buildea y publica a producción; un push a
+cualquier otra rama sube una versión de preview con su propia URL. La imagen de
+build necesita `PNPM_VERSION` en 11 o superior, porque `pnpm-workspace.yaml` usa
+opciones de pnpm 11.
+
+`.github/workflows/test.yml` corre el chequeo de tipos y los tests en cada push
+y cada pull request. No despliega nada ni frena el build de Cloudflare — solo
+marca el commit.
