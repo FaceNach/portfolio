@@ -1,5 +1,4 @@
 ---
-import Icon from "./Icon.astro";
 import { SECTION } from "../data/sections";
 import { dict } from "../i18n";
 
@@ -8,19 +7,18 @@ const t = dict(Astro.currentLocale);
 const year = new Date().getFullYear();
 
 const social = [
-	{ href: t.contact.github, label: t.contact.githubLabel, icon: "icon-github" },
+	{ href: t.contact.github, label: t.contact.githubLabel },
 	{
 		href: t.contact.linkedin,
 		label: t.contact.linkedinLabel,
-		icon: "icon-linkedin",
 	},
 ];
 
 const emailEncoded = btoa(t.contact.email);
 
-const itemClass =
-	"group -my-2 flex cursor-pointer items-center gap-2.5 py-2 text-amber transition-colors hover:text-amber-hi";
-const iconClass = "size-4 shrink-0 fill-current";
+const linkClass =
+	"group -my-2 flex cursor-pointer items-center py-2 text-amber transition-colors hover:text-amber-hi";
+const bracketClass = "opacity-50";
 const labelClass = "underline-offset-4 group-hover:underline";
 ---
 
@@ -32,17 +30,46 @@ const labelClass = "underline-offset-4 group-hover:underline";
 		<p class="font-mono text-xs tracking-[0.14em] text-amber">
 			{t.contact.label}
 		</p>
+
 		<h2
 			class="mt-3 font-mono text-2xl font-medium tracking-[-0.02em] text-bone sm:text-3xl"
 		>
-			{t.contact.heading}
+			<span class="mr-1 text-amber">$</span>{t.contact.command}<span
+				class="caret"
+				aria-hidden="true"></span
+			>
 		</h2>
-		<p class="mt-4 max-w-[52ch] text-[15px] leading-[1.75] text-bone">
-			{t.contact.body}
-		</p>
+
+		<dl
+			class="mt-9 max-w-[46ch] font-mono text-sm leading-7 sm:text-[15px]"
+		>
+			{
+				t.contact.status.map((s) => (
+					<div class="flex gap-4">
+						<dt class="w-[9ch] shrink-0 text-faint">{s.key}</dt>
+						<dd class={s.key === "status" ? "text-amber-hi" : "text-bone"}>
+							{s.value}
+						</dd>
+					</div>
+				))
+			}
+		</dl>
+
+		<div class="mt-9 font-mono text-sm sm:text-[15px]">
+			<p class="text-muted">
+				<span class="text-amber">&gt;</span> {t.contact.lookingLabel}
+			</p>
+			<ul class="mt-1 space-y-0.5 pl-4 text-bone">
+				{
+					t.contact.lookingFor.map((item) => (
+						<li>{item}</li>
+					))
+				}
+			</ul>
+		</div>
 
 		<div
-			class="relative mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 font-mono text-base"
+			class="relative mt-11 flex flex-wrap items-center gap-x-7 gap-y-3 font-mono text-base"
 		>
 			<button
 				type="button"
@@ -51,10 +78,11 @@ const labelClass = "underline-offset-4 group-hover:underline";
 				data-copied={t.contact.emailCopied}
 				data-failed={t.contact.emailFailed}
 				aria-label={t.contact.emailAction}
-				class={itemClass}
+				class={linkClass}
 			>
-				<Icon id="icon-mail" class={iconClass} />
+				<span class={bracketClass}>[</span>
 				<span class={labelClass}>{t.contact.emailLabel}</span>
+				<span class={bracketClass}>]</span>
 			</button>
 
 			{
@@ -63,10 +91,11 @@ const labelClass = "underline-offset-4 group-hover:underline";
 						href={item.href}
 						target="_blank"
 						rel="noopener noreferrer"
-						class={itemClass}
+						class={linkClass}
 					>
-						<Icon id={item.icon} class={iconClass} />
-						<span class={labelClass}>{item.label} →</span>
+						<span class={bracketClass}>[</span>
+						<span class={labelClass}>{item.label}</span>
+						<span class={bracketClass}>]</span>
 					</a>
 				))
 			}

@@ -73,6 +73,7 @@ const es = {
 					"TypeScript",
 					"JavaScript",
 					"React",
+					"Next",
 					"Astro",
 					"HTML",
 					"CSS",
@@ -108,8 +109,20 @@ const es = {
 
 	contact: {
 		label: "§ CONTACTO",
-		heading: "Escribime",
-		body: "Si tenés un proyecto, una vacante o una duda técnica, mandá un mail. Contesto todos.",
+		command: "connect --to ignacio",
+		status: [
+			{ key: "status", value: "disponible" },
+			{ key: "location", value: "Argentina" },
+			{ key: "timezone", value: "GMT-3" },
+			{ key: "work", value: "remoto" },
+			{ key: "focus", value: "backend · automatización · integraciones" },
+		],
+		lookingLabel: "buscando:",
+		lookingFor: [
+			"oportunidades backend",
+			"proyectos freelance",
+			"problemas técnicos interesantes",
+		],
 		email: "ignacioijg@gmail.com",
 		emailLabel: "mail",
 		emailAction: "copiar mail",
@@ -132,6 +145,16 @@ const es = {
 			note: "Trabajar con audio y modelos en local. Hacer una CLI tool que funcione en distintos OS",
 			url: null,
 			repo: "https://github.com/FaceNach/LocalTeacher",
+		},
+		{
+			slug: "rideshare",
+			name: "Uber de bolsillo",
+			tech: ["Go", "gRPC", "RabbitMQ", "MongoDB", "Kubernetes", "Next.js"],
+			detail:
+				"Plataforma de ride-sharing event-driven con microservicios en Go: pedís un viaje, el trip service calcula ruta y tarifa con OSRM, el driver service matchea choferes cercanos con geohash, y el pago se cierra con Stripe Checkout. Todo coordinado por eventos de RabbitMQ y en tiempo real sobre WebSockets.",
+			note: "Combinar llamadas síncronas con gRPC entre servicios y eventos asíncronos en RabbitMQ, con dead letter exchange y retries. Levantar el stack entero en Kubernetes con Tilt y seguir los traces en Jaeger con OpenTelemetry.",
+			url: null,
+			repo: "https://github.com/FaceNach/RideShare",
 		},
 		{
 			slug: "wsticket",

@@ -64,6 +64,7 @@ const en: Dict = {
 					"TypeScript",
 					"JavaScript",
 					"React",
+					"Next",
 					"Astro",
 					"HTML",
 					"CSS",
@@ -99,8 +100,20 @@ const en: Dict = {
 
 	contact: {
 		label: "§ CONTACT",
-		heading: "Email me",
-		body: "If you have a project, an opening or a technical question, send me an email. I answer all of them.",
+		command: "connect --to ignacio",
+		status: [
+			{ key: "status", value: "available" },
+			{ key: "location", value: "Argentina" },
+			{ key: "timezone", value: "GMT-3" },
+			{ key: "work", value: "remote" },
+			{ key: "focus", value: "backend · automation · integrations" },
+		],
+		lookingLabel: "looking for:",
+		lookingFor: [
+			"backend opportunities",
+			"freelance projects",
+			"interesting technical problems",
+		],
 		email: "ignacioijg@gmail.com",
 		emailLabel: "email",
 		emailAction: "copy email",
@@ -123,6 +136,16 @@ const en: Dict = {
 			note: "Working with audio and models running locally. Building a CLI tool that works the same on every OS.",
 			url: null,
 			repo: "https://github.com/FaceNach/LocalTeacher",
+		},
+		{
+			slug: "rideshare",
+			name: "A pocket Uber",
+			tech: ["Go", "gRPC", "RabbitMQ", "MongoDB", "Kubernetes", "Next.js"],
+			detail:
+				"Event-driven ride-sharing platform built with Go microservices: you request a trip, the trip service computes the route and fare with OSRM, the driver service matches nearby drivers through geohash, and payment goes through Stripe Checkout. Everything is coordinated by RabbitMQ events and streamed in real time over WebSockets.",
+			note: "Combining synchronous gRPC calls between services with asynchronous RabbitMQ events, including a dead letter exchange and retries. Running the whole stack on Kubernetes with Tilt and following traces in Jaeger via OpenTelemetry.",
+			url: null,
+			repo: "https://github.com/FaceNach/RideShare",
 		},
 		{
 			slug: "wsticket",
