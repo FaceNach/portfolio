@@ -149,7 +149,7 @@ const es = {
 		{
 			slug: "rideshare",
 			name: "Uber de bolsillo",
-			tech: ["Go", "gRPC", "RabbitMQ", "MongoDB", "Kubernetes", "Next.js"],
+			tech: ["Go", "gRPC", "RabbitMQ", "MongoDB", "Kubernetes", "Next"],
 			detail:
 				"Plataforma de ride-sharing event-driven con microservicios en Go: pedís un viaje, el trip service calcula ruta y tarifa con OSRM, el driver service matchea choferes cercanos con geohash, y el pago se cierra con Stripe Checkout. Todo coordinado por eventos de RabbitMQ y en tiempo real sobre WebSockets.",
 			note: "Combinar llamadas síncronas con gRPC entre servicios y eventos asíncronos en RabbitMQ, con dead letter exchange y retries. Levantar el stack entero en Kubernetes con Tilt y seguir los traces en Jaeger con OpenTelemetry.",

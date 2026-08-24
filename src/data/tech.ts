@@ -65,7 +65,7 @@ export const TECH: Tech[] = [
 	{ name: "TypeScript", icon: siTypescript },
 	{ name: "JavaScript", icon: siJavascript },
 	{ name: "React", icon: siReact },
-	{ name: "Next.js", icon: siNextdotjs },
+	{ name: "Next", icon: siNextdotjs },
 	{ name: "Astro", icon: siAstro },
 	{ name: "HTML", icon: siHtml5 },
 	{ name: "CSS", icon: siCss },
