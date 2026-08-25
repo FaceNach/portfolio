@@ -238,7 +238,7 @@ const es = {
 				"Docker",
 			],
 			detail:
-				"Acortador de URLs en Go, chico a propósito. Lo que importa es lo que tiene colgado. Logs estructurados con slog, métricas en Prometheus, traces en Jaeger y profiling con pprof.",
+				"Acortador de URLs en Go, chico a propósito. La app es mínima; el foco está en la observabilidad: logs estructurados con slog, métricas en Prometheus, traces en Jaeger y profiling con pprof.",
 			note: "Instrumentar un servicio con logs estructurados, métricas, traces y profiling. Levantar el stack con Docker Compose y leerlo en Grafana. Entender qué mirar para detectar que algo anda mal.",
 			url: null,
 			repo: "https://github.com/FaceNach/linko-starter",
