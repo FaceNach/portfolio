@@ -39,7 +39,7 @@ const es = {
 		lastSession: `última sesión: ${fecha}`,
 		nameFirst: "IGNACIO",
 		nameLast: "GUNST",
-		role: "backend & frontend · integración de sistemas · automatización de procesos",
+		role: "backend & frontend · integración de sistemas · automatización",
 		intro:
 			"Desarrollo servicios backend, APIs REST, integraciones con servicios externos y aplicaciones respaldadas por bases de datos.",
 	},

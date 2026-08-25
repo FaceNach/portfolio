@@ -30,7 +30,7 @@ const en: Dict = {
 		lastSession: `last session: ${date}`,
 		nameFirst: "IGNACIO",
 		nameLast: "GUNST",
-		role: "backend & frontend · systems integration · process automation",
+		role: "backend & frontend · systems integration · automation",
 		intro:
 			"I build backend services, REST APIs, integrations with external services and database-backed applications.",
 	},
@@ -229,7 +229,7 @@ const en: Dict = {
 				"Docker",
 			],
 			detail:
-				"URL shortener in Go, deliberately small. What matters is everything hanging off it. Structured logs with slog, metrics in Prometheus, traces in Jaeger and profiling with pprof.",
+				"URL shortener in Go, deliberately small. The app is minimal; the focus is on observability: structured logs with slog, metrics in Prometheus, traces in Jaeger and profiling with pprof.",
 			note: "Instrumenting a whole service with structured logs, metrics, traces and profiling. Bringing the stack up with Docker Compose and reading it in Grafana. Learning what to look at to spot that something is wrong.",
 			url: null,
 			repo: "https://github.com/FaceNach/linko-starter",
