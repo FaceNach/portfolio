@@ -8,6 +8,7 @@ describe("tech catalogue", () => {
 	it("indexes every technology by name", () => {
 		expect(techByName.size).toBe(TECH.length);
 		expect(techByName.get("Go")).toBeDefined();
+		expect(techByName.get("pgvector")).toBeDefined();
 	});
 
 	it("iconsFor returns unique entries, only ones with an icon", () => {
@@ -48,6 +49,7 @@ describe("techMarkId", () => {
 
 	it("falls back to a kind icon when the logo is missing", () => {
 		expect(techMarkId("SQL Server")).toBe(ICON_DB_ID);
+		expect(techMarkId("pgvector")).toBe(ICON_DB_ID);
 		expect(techMarkId("SQL")).toBe(ICON_LANG_ID);
 	});
 

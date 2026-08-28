@@ -148,6 +148,16 @@ const en: Dict = {
 			repo: "https://github.com/FaceNach/RideShare",
 		},
 		{
+			slug: "rag-chat",
+			name: "RAG Chat",
+			tech: ["Go", "PostgreSQL", "pgvector", "OpenAI", "Tailwind", "Docker"],
+			detail:
+				"Local RAG chat in Go with terminal and web interfaces. It ingests documents and images, retrieves relevant excerpts from PostgreSQL with pgvector, and adds them to the context while streaming the model's response.",
+			note: "Building the RAG pipeline end to end. Rewriting questions from the conversation, generating embeddings, retrieving by similarity and keeping chat available when the vector database is unavailable.",
+			url: null,
+			repo: "https://github.com/FaceNach/rag-chat",
+		},
+		{
 			slug: "wsticket",
 			name: "Ticket queue system",
 			tech: ["Bun", "TypeScript", "WebSocket", "React", "Zod", "Tailwind"],

@@ -157,6 +157,16 @@ const es = {
 			repo: "https://github.com/FaceNach/RideShare",
 		},
 		{
+			slug: "rag-chat",
+			name: "RAG Chat",
+			tech: ["Go", "PostgreSQL", "pgvector", "OpenAI", "Tailwind", "Docker"],
+			detail:
+				"Chat RAG local en Go con interfaces de terminal y web. Ingiere documentos e imágenes, recupera fragmentos relevantes desde PostgreSQL con pgvector y los suma al contexto mientras transmite la respuesta del modelo.",
+			note: "Construir el flujo RAG de punta a punta. Reescribir preguntas según la conversación, generar embeddings, recuperar por similitud y mantener el chat disponible aunque falle la base de datos vectorial.",
+			url: null,
+			repo: "https://github.com/FaceNach/rag-chat",
+		},
+		{
 			slug: "wsticket",
 			name: "Sistema de colas de tickets",
 			tech: ["Bun", "TypeScript", "WebSocket", "React", "Zod", "Tailwind"],

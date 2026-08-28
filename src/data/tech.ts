@@ -70,6 +70,7 @@ export const TECH: Tech[] = [
 	{ name: "HTML", icon: siHtml5 },
 	{ name: "CSS", icon: siCss },
 	{ name: "PostgreSQL", icon: siPostgresql },
+	{ name: "pgvector", icon: null, kind: "db" },
 	{ name: "MySQL", icon: siMysql },
 	{ name: "SQLite", icon: siSqlite },
 	{ name: "MongoDB", icon: siMongodb },
